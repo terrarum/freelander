@@ -16,8 +16,7 @@ public class DesktopLauncher {
         TexturePacker.Settings settings = new TexturePacker.Settings();
         settings.maxWidth = 1024;
         settings.maxHeight = 1024;
-        String path = "images";
-        TexturePacker.process(settings, path, path, "spritesheet");
+        TexturePacker.process(settings, "images", "images", "spritesheet");
 
         new LwjglApplication(new Freelander(), config);
 	}

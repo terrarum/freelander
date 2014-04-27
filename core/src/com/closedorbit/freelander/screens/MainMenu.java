@@ -9,13 +9,12 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
@@ -28,6 +27,7 @@ public class MainMenu extends DefaultScreen {
     SpriteBatch batch;
 
     BitmapFont titleFont;
+    BitmapFont normalFont;
 
     public MainMenu(Game game) {
         super(game);
@@ -36,42 +36,60 @@ public class MainMenu extends DefaultScreen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
         batch.getProjectionMatrix().setToOrtho2D(0, 0, 480, 800);
 
-        // Create title font.
+        // Create SciFly generator.
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/SciFly-Sans.ttf"));
+
+        // Create title font.
         FreeTypeFontGenerator.FreeTypeFontParameter titleParams = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        titleParams.size = 40;
+        titleParams.size = 80;
         titleParams.characters = "Felandr";
         titleFont = fontGenerator.generateFont(titleParams);
+
+        // Create button label font.
+        FreeTypeFontGenerator.FreeTypeFontParameter labelParams = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        labelParams.size = 40;
+        labelParams.characters = "PplayOtoins";
+        normalFont = fontGenerator.generateFont(labelParams);
         fontGenerator.dispose();
-        titleFont.setColor(Color.WHITE);
 
         // Create UI buttons.
+        stage = new Stage();
         skin = new Skin();
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        skin.add("white", new Texture(pixmap));
-        skin.add("default", new BitmapFont());
 
-        TextButtonStyle textButtonStyle = new TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.font = skin.getFont("default");
-        skin.add("default", textButtonStyle);
+        // Import texturepacked spritesheet.
+        skin.addRegions(new TextureAtlas(Gdx.files.internal("images/spritesheet.atlas")));
 
+        // Add freetype-generated font to it.
+        skin.add("title-font", titleFont);
+        skin.add("normal-font", normalFont);
+
+        // Load ui skin for use now that fonts have been added.
+        skin.load(Gdx.files.internal("skin.json"));
+
+        // Makes the stage listen to input?
+        Gdx.input.setInputProcessor(stage);
+
+        // Create UI pieces.
+        Label title = new Label("Freelander", skin, "title-font");
+        TextButton playButton = new TextButton("Play", skin);
+        TextButton optionsButton = new TextButton("Options", skin);
+
+        // Create a layout table.
         Table table = new Table();
         table.setFillParent(true);
+        table.add(title).expand().top().padTop(100);
+        table.row();
+        table.add(playButton).padBottom(100);
+        table.row();
+        table.add(optionsButton).padBottom(200);
+//        table.debug();
         stage.addActor(table);
 
-        final TextButton button = new TextButton("Play", skin);
-        table.add(button);
-
-        button.addListener(new ChangeListener() {
+        playButton.addListener(new ChangeListener() {
             public void changed (ChangeListener.ChangeEvent event, Actor actor) {
                 game.setScreen(new LevelPacks(game));
             }
@@ -87,7 +105,7 @@ public class MainMenu extends DefaultScreen {
         Table.drawDebug(stage);
 
         batch.begin();
-        titleFont.draw(batch, "Freelander", 120, 750);
+
         batch.end();
     }
 
