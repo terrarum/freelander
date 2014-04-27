@@ -1,0 +1,33 @@
+
+spritesheet.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+button
+  rotate: false
+  xy: 2, 156
+  size: 200, 75
+  orig: 200, 75
+  offset: 0, 0
+  index: -1
+button-disabled
+  rotate: false
+  xy: 2, 79
+  size: 200, 75
+  orig: 200, 75
+  offset: 0, 0
+  index: -1
+button-down
+  rotate: false
+  xy: 2, 2
+  size: 200, 75
+  orig: 200, 75
+  offset: 0, 0
+  index: -1
+dropship
+  rotate: false
+  xy: 204, 186
+  size: 24, 45
+  orig: 24, 45
+  offset: 0, 0
+  index: -1
