@@ -12,8 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.closedorbit.freelander.FontBuilder;
-import com.closedorbit.freelander.LevelPackLoader.Level;
-import com.closedorbit.freelander.LevelPackLoader.LevelPack;
+import com.closedorbit.freelander.levelPackLoader.Level;
+import com.closedorbit.freelander.levelPackLoader.LevelPack;
 
 public class LevelsScreen extends DefaultScreen {
 
@@ -65,7 +65,7 @@ public class LevelsScreen extends DefaultScreen {
             levelButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-//                    game.setScreen(new GameScreen(game, level));
+                    game.setScreen(new GameScreen(game, level));
                 }
             });
 

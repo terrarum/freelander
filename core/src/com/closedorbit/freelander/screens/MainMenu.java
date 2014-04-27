@@ -66,9 +66,9 @@ public class MainMenu extends DefaultScreen {
 
         playButton.addListener(new ChangeListener() {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                game.setScreen(new LevelPacksScreen(game));
-            };
-        });
+            game.setScreen(new LevelPacksScreen(game));
+        };
+    });
     }
 
     @Override

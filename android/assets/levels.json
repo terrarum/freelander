@@ -7,19 +7,27 @@
             levels: [
                 {
                     id: 1,
-                    name: "Touchdown"
+                    name: "Touchdown",
+                    gravity: 1.622,
+//                    ship: {
+//                        x: 228,
+//                        y: 500
+//                    }
                 },
                 {
                     id: 2,
-                    name: "Reconnaissance"
+                    name: "Reconnaissance",
+                    gravity: 1.622
                 },
                 {
                     id: 3,
-                    name: "Water"
+                    name: "Water",
+                    gravity: 1.622
                 },
                 {
                     id: 4,
-                    name: "Return to Base"
+                    name: "Return to Base",
+                    gravity: 1.622
                 }
             ]
         },
