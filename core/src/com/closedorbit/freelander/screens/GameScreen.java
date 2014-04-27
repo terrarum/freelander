@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.closedorbit.freelander.levelPackLoader.Level;
 
@@ -22,7 +23,6 @@ public class GameScreen extends DefaultScreen {
     // Box2d/World unit conversion.
     static final float WORLD_TO_BOX = 0.01f;
     static final float BOX_TO_WORLD = 100f;
-
 
     BodyDef shipDef;
     Body shipBody;
@@ -52,26 +52,26 @@ public class GameScreen extends DefaultScreen {
         groundBodyDef.position.set(new Vector2(0, 10));
         Body groundBody = world.createBody(groundBodyDef);
         PolygonShape groundBox = new PolygonShape();
-        groundBox.setAsBox((camera.viewportWidth) * 2, 10.0f);
+        groundBox.setAsBox(camera.viewportWidth, 10.0f);
         groundBody.createFixture(groundBox, 0.0f);
 
 
         shipDef = new BodyDef();
         shipDef.type = BodyDef.BodyType.DynamicBody;
-        shipDef.position.set(480 / 2 - 24 / 2, 1500);
+        shipDef.position.set(480 / 2 - 24 / 2, 100);
 
-        camera.position.set(240, 1400, 0);
+        camera.position.set(240, shipDef.position.y - 100, 0);
         camera.update();
 
         shipBody = world.createBody(shipDef);
         shipShape = new PolygonShape();
-        shipShape.setAsBox(24, 45);
+        shipShape.setAsBox(24, 44);
 
         shipFixtureDef = new FixtureDef();
         shipFixtureDef.shape = shipShape;
-        shipFixtureDef.density = 2.0f;
-        shipFixtureDef.friction = 0.5f;
-        shipFixtureDef.restitution = 0.5f;
+        shipFixtureDef.density = 1.0f;
+        shipFixtureDef.friction = 0.1f;
+        shipFixtureDef.restitution = 0.1f;
 
         shipFixture = shipBody.createFixture(shipFixtureDef);
         shipShape.dispose();
@@ -82,11 +82,18 @@ public class GameScreen extends DefaultScreen {
 //        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        if (Gdx.input.isTouched()) {
+
+            Vector2 force = new Vector2(0, 14500);
+
+            this.shipBody.applyForce(force, shipBody.getWorldCenter(), true);
+        }
+
         camera.position.set(shipBody.getPosition(), 0);
         camera.update();
 
         debugRenderer.render(world, camera.combined);
-        world.step(1/60f, 6, 2);
+        world.step(1/20f, 6, 2);
     }
 
     @Override
