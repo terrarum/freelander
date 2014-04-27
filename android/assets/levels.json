@@ -1,0 +1,50 @@
+{
+    levelPacks: [
+        {
+            id: 1,
+            name: "To The Moon",
+            image: "tothemoon",
+            levels: [
+                {
+                    id: 1,
+                    name: "Touchdown"
+                },
+                {
+                    id: 2,
+                    name: "Reconnaissance"
+                },
+                {
+                    id: 3,
+                    name: "Water"
+                },
+                {
+                    id: 4,
+                    name: "Return to Base"
+                }
+            ]
+        },
+        {
+            id: 2,
+            name: "Mission to Mars",
+            image: "missiontomars",
+            levels: [
+                {
+                    id: 1,
+                    name: "Red Planet"
+                },
+                {
+                    id: 2,
+                    name: "Signs of Life"
+                },
+                {
+                    id: 3,
+                    name: "Delivery"
+                },
+                {
+                    id: 4,
+                    name: "Fresh Tracks"
+                }
+            ]
+        }
+    ]
+}
