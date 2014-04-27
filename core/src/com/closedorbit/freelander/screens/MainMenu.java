@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.closedorbit.freelander.FontBuilder;
 
 public class MainMenu extends DefaultScreen {
 
@@ -20,8 +21,7 @@ public class MainMenu extends DefaultScreen {
     Stage stage;
     SpriteBatch batch;
 
-    BitmapFont titleFont;
-    BitmapFont normalFont;
+    FontBuilder fontBuilder;
 
     public MainMenu(Game game) {
         super(game);
@@ -30,36 +30,17 @@ public class MainMenu extends DefaultScreen {
     @Override
     public void show() {
         batch = new SpriteBatch();
+        stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
         batch.getProjectionMatrix().setToOrtho2D(0, 0, 480, 800);
 
-        // Create SciFly generator.
-        FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/SciFly-Sans.ttf"));
-
-        // Create title font.
-        FreeTypeFontGenerator.FreeTypeFontParameter titleParams = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        titleParams.size = 80;
-        titleParams.characters = "Felandr";
-        titleFont = fontGenerator.generateFont(titleParams);
-
-        // Create button label font.
-        FreeTypeFontGenerator.FreeTypeFontParameter labelParams = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        labelParams.size = 40;
-        labelParams.characters = "PplayOtoins";
-        normalFont = fontGenerator.generateFont(labelParams);
-        fontGenerator.dispose();
-
-        // Create UI buttons.
-        stage = new Stage();
+        // Create UI.
         skin = new Skin();
 
-        // Import texturepacked spritesheet.
-        skin.addRegions(new TextureAtlas(Gdx.files.internal("images/spritesheet.atlas")));
-
-        // Add freetype-generated font to it.
-        skin.add("title-font", titleFont);
-        skin.add("normal-font", normalFont);
+        // Add fonts to skin.
+        fontBuilder = new FontBuilder();
+        fontBuilder.addFonts(skin);
 
         // Load ui skin for use now that fonts have been added.
         skin.load(Gdx.files.internal("skin.json"));
@@ -84,9 +65,9 @@ public class MainMenu extends DefaultScreen {
         stage.addActor(table);
 
         playButton.addListener(new ChangeListener() {
-            public void changed (ChangeListener.ChangeEvent event, Actor actor) {
+            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 game.setScreen(new LevelPacksScreen(game));
-            }
+            };
         });
     }
 
@@ -105,13 +86,9 @@ public class MainMenu extends DefaultScreen {
 
     @Override
     public void hide() {
-        // Fonts.
-        normalFont.dispose();
-        titleFont.dispose();
-
+        fontBuilder.dispose();
         // Screen stuff.
         batch.dispose();
         stage.dispose();
-//        skin.dispose(); // This breaks if uncommented, I don't know why.
     }
 }
