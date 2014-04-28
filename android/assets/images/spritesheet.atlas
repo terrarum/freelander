@@ -31,6 +31,13 @@ dropship
   orig: 24, 45
   offset: 0, 0
   index: -1
+groundTile
+  rotate: false
+  xy: 608, 24
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
 
 spritesheet2.png
 format: RGBA8888

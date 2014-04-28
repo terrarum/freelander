@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -33,8 +34,11 @@ public class GameScreen extends DefaultScreen {
     PolygonShape shipShape;
     FixtureDef shipFixtureDef;
     Fixture shipFixture;
-    Texture shipImage;
+    Texture shipTexture;
     Sprite shipSprite;
+
+    Texture groundTexture;
+    Sprite groundSprite;
 
     // HUD
     OrthographicCamera hudCam;
@@ -80,11 +84,14 @@ public class GameScreen extends DefaultScreen {
         createBox(-30, 200,  10, 10);
         createBox(-30, 400,  10, 10);
         createBox(-30, 600,  10, 10);
-        createBox(-30, V_HEIGHT,  10, 10);
+        createBox(-30, 800,  10, 10);
         createBox(-30, 1000, 10, 10);
 
-        shipImage = new Texture(Gdx.files.internal("images/dropship.png"));
-        shipSprite = new Sprite(shipImage, 0, 0, 24, 45);
+        shipTexture = new Texture(Gdx.files.internal("images/dropship.png")); // Probably not using the atlas.
+        shipSprite = new Sprite(shipTexture, 0, 0, 24, 45);
+
+        groundTexture = new Texture(Gdx.files.internal("images/groundTile.png"));
+        groundTexture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
 
         shipDef = new BodyDef();
         shipDef.type = BodyDef.BodyType.DynamicBody;
@@ -158,6 +165,7 @@ public class GameScreen extends DefaultScreen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         shipSprite.draw(batch);
+        batch.draw(groundTexture, 0 * PPM, 0 * PPM, groundTexture.getWidth() * 3, groundTexture.getHeight() * 3, 0, 3, 3, 0);
         batch.end();
 
         world.step(1/60f, 6, 2);
