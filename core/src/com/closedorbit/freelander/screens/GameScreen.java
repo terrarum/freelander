@@ -43,17 +43,20 @@ public class GameScreen extends DefaultScreen {
     Stage stage;
     Label hud1;
     Label hud2;
+    
+    float V_WIDTH = 480;
+    float V_HEIGHT = 800;
 
     public GameScreen(Game game, Level levelData) {
         super(game);
         this.levelData = levelData;
         camera = new OrthographicCamera();
         b2dCam = new OrthographicCamera();
-        camera.setToOrtho(false, 480, 800);
-        b2dCam.setToOrtho(false, 480 / PPM, 800 / PPM);
+        camera.setToOrtho(false, V_WIDTH, V_HEIGHT); // Screen V_WIDTH and V_HEIGHT
+        b2dCam.setToOrtho(false, V_WIDTH / PPM, V_HEIGHT / PPM);
     }
 
-    public Body createBox(float w, float h, float x, float y) {
+    public Body createBox(float x, float y, float w, float h) {
         BodyDef boxDef = new BodyDef();
         boxDef.position.set(new Vector2(x / PPM, y / PPM));
         Body boxBody = world.createBody(boxDef);
@@ -66,29 +69,29 @@ public class GameScreen extends DefaultScreen {
 
     @Override
     public void show() {
-        float gravity = levelData.gravity;
-        world = new World(new Vector2(0, -gravity), true);
+        world = new World(levelData.gravity, true);
         debugRenderer = new Box2DDebugRenderer();
 
         //Ground body.
-        createBox(camera.viewportWidth, 10, 0, -5);
+        createBox(1, 0 - V_HEIGHT / 4, V_WIDTH * 4, V_HEIGHT / 2);
 
         // Markers.
-        createBox(10, 10, 0, 0);
-        createBox(10, 10, 0, 200);
-        createBox(10, 10, 0, 400);
-        createBox(10, 10, 0, 600);
-        createBox(10, 10, 0, 800);
-        createBox(10, 10, 0, 1000);
+        createBox(-30, 0,    10, 10);
+        createBox(-30, 200,  10, 10);
+        createBox(-30, 400,  10, 10);
+        createBox(-30, 600,  10, 10);
+        createBox(-30, V_HEIGHT,  10, 10);
+        createBox(-30, 1000, 10, 10);
 
         shipImage = new Texture(Gdx.files.internal("images/dropship.png"));
         shipSprite = new Sprite(shipImage, 0, 0, 24, 45);
 
         shipDef = new BodyDef();
         shipDef.type = BodyDef.BodyType.DynamicBody;
-        shipDef.position.set(100 / PPM, 200 / PPM);
+        shipDef.position.set(levelData.ship.x / PPM, (levelData.ship.y + shipSprite.getHeight() / 2) / PPM );
 
         shipBody = world.createBody(shipDef);
+        shipBody.setLinearVelocity(levelData.shipStartingVelocity.x / PPM, levelData.shipStartingVelocity.y / PPM);
         shipShape = new PolygonShape();
         shipShape.setAsBox(24 / 2 / PPM, 45 / 2 / PPM);
 
@@ -96,16 +99,16 @@ public class GameScreen extends DefaultScreen {
         shipFixtureDef.shape = shipShape;
         shipFixtureDef.density = 1.0f;
         shipFixtureDef.friction = 0.5f;
-        shipFixtureDef.restitution = 0.1f;
+        shipFixtureDef.restitution = 0f;
 
         shipFixture = shipBody.createFixture(shipFixtureDef);
         shipShape.dispose();
 
-        camera.position.set(240, shipDef.position.y - 100, 0);
+        camera.position.set(shipDef.position.x, shipDef.position.y - 100, 0);
         camera.update();
 
         batch = new SpriteBatch();
-        batch.getProjectionMatrix().setToOrtho2D(0, 0, 480, 800);
+        batch.getProjectionMatrix().setToOrtho2D(0, 0, V_WIDTH, V_HEIGHT);
 
         // HUD.
         stage = new Stage();
@@ -130,7 +133,7 @@ public class GameScreen extends DefaultScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (Gdx.input.isTouched()) {
-            Vector2 force = new Vector2(0, 450);
+            Vector2 force = new Vector2(0, 400);
             shipBody.applyForce(force, shipBody.getWorldCenter(), true);
         }
 
