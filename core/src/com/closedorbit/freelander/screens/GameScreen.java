@@ -12,17 +12,16 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.closedorbit.freelander.levelPackLoader.Level;
 
+import static com.closedorbit.freelander.utilities.B2DVars.PPM;
+
 public class GameScreen extends DefaultScreen {
 
     Batch batch;
     Level levelData;
     World world;
     OrthographicCamera camera;
+    OrthographicCamera b2dCam;
     Box2DDebugRenderer debugRenderer;
-
-    // Box2d/World unit conversion.
-    static final float WORLD_TO_BOX = 0.01f;
-    static final float BOX_TO_WORLD = 100f;
 
     BodyDef shipDef;
     Body shipBody;
@@ -32,15 +31,13 @@ public class GameScreen extends DefaultScreen {
     Texture shipImage;
     Sprite shipSprite;
 
-    float ConvertToBox(float x){
-        return x * WORLD_TO_BOX;
-    }
-
     public GameScreen(Game game, Level levelData) {
         super(game);
         this.levelData = levelData;
         camera = new OrthographicCamera();
+        b2dCam = new OrthographicCamera();
         camera.setToOrtho(false, 480, 800);
+        b2dCam.setToOrtho(false, 480 / PPM, 800 / PPM);
     }
 
     @Override
@@ -51,10 +48,10 @@ public class GameScreen extends DefaultScreen {
 
         //Ground body
         BodyDef groundBodyDef = new BodyDef();
-        groundBodyDef.position.set(new Vector2(0, 10));
+        groundBodyDef.position.set(new Vector2(0 / PPM, 10 / PPM));
         Body groundBody = world.createBody(groundBodyDef);
         PolygonShape groundBox = new PolygonShape();
-        groundBox.setAsBox(camera.viewportWidth, 10.0f);
+        groundBox.setAsBox(200 / PPM, 10 / PPM);
         groundBody.createFixture(groundBox, 0.0f);
 
         shipImage = new Texture(Gdx.files.internal("images/dropship.png"));
@@ -62,23 +59,23 @@ public class GameScreen extends DefaultScreen {
 
         shipDef = new BodyDef();
         shipDef.type = BodyDef.BodyType.DynamicBody;
-        shipDef.position.set(480 / 2 - 24 / 2, 1500);
-
-        camera.position.set(240, shipDef.position.y - 100, 0);
-        camera.update();
+        shipDef.position.set(100 / PPM, 200 / PPM);
 
         shipBody = world.createBody(shipDef);
         shipShape = new PolygonShape();
-        shipShape.setAsBox(24, 44);
+        shipShape.setAsBox(24 / 2 / PPM, 45 / 2 / PPM);
 
         shipFixtureDef = new FixtureDef();
         shipFixtureDef.shape = shipShape;
         shipFixtureDef.density = 1.0f;
-        shipFixtureDef.friction = 0.1f;
+        shipFixtureDef.friction = 0.5f;
         shipFixtureDef.restitution = 0.1f;
 
         shipFixture = shipBody.createFixture(shipFixtureDef);
         shipShape.dispose();
+
+        camera.position.set(240, shipDef.position.y - 100, 0);
+        camera.update();
 
         batch = new SpriteBatch();
         batch.getProjectionMatrix().setToOrtho2D(0, 0, 480, 800);
@@ -86,11 +83,11 @@ public class GameScreen extends DefaultScreen {
 
     @Override
     public void render(float delta) {
-//        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (Gdx.input.isTouched()) {
-            Vector2 force = new Vector2(0, 14500);
+            Vector2 force = new Vector2(0, 1450);
             shipBody.applyForce(force, shipBody.getWorldCenter(), true);
         }
 
@@ -99,14 +96,17 @@ public class GameScreen extends DefaultScreen {
         camera.position.set(shipBody.getPosition(), 0);
         camera.update();
 
+        b2dCam.position.set(shipBody.getPosition(), 0);
+        b2dCam.update();
+        debugRenderer.render(world, b2dCam.combined);
+
         // Matches the batch coordinate system to the camera.
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         shipSprite.draw(batch);
         batch.end();
 
-        debugRenderer.render(world, camera.combined);
-        world.step(1/20f, 6, 2);
+        world.step(1/60f, 6, 2);
     }
 
     @Override
