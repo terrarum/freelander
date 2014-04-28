@@ -17,8 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.closedorbit.freelander.FontBuilder;
 import com.closedorbit.freelander.levelPackLoader.Level;
 
-import java.text.DecimalFormat;
-
 import static com.closedorbit.freelander.utilities.B2DVars.PPM;
 
 public class GameScreen extends DefaultScreen {
