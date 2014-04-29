@@ -14,6 +14,9 @@ import static com.closedorbit.freelander.utilities.B2DVars.PPM;
 public class ShipEntity {
     public Sprite sprite;
     public Body body;
+    public Vector2 thrust;
+    public Vector2 startingVelocity;
+    public Vector2 startingPosition;
 
     public Vector2 getPosition() {
         return this.body.getPosition();

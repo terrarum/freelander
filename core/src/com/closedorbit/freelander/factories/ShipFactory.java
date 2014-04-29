@@ -29,12 +29,12 @@ public class ShipFactory {
         // Create bodyDef.
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(levelData.ship.x / PPM, levelData.ship.y / PPM );
+        bodyDef.position.set(levelData.ship.startingPosition.x / PPM, levelData.ship.startingPosition.y / PPM );
         bodyDef.fixedRotation = true;
 
         // Create body.
         Body body = world.createBody(bodyDef);
-        body.setLinearVelocity(levelData.shipStartingVelocity.x / PPM, levelData.shipStartingVelocity.y / PPM);
+        body.setLinearVelocity(levelData.ship.startingVelocity.x / PPM, levelData.ship.startingVelocity.y / PPM);
 
         // Create body shape.
         PolygonShape shape = new PolygonShape();

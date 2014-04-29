@@ -11,7 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.closedorbit.freelander.FontBuilder;
+import com.closedorbit.freelander.entities.PlanetEntity;
 import com.closedorbit.freelander.entities.RectangleEntity;
 import com.closedorbit.freelander.entities.ShipEntity;
 import com.closedorbit.freelander.factories.RectangleFactory;
@@ -40,10 +42,16 @@ public class GameScreen extends DefaultScreen {
     Label hud1;
     Label hud2;
 
+    PlanetEntity planet;
     ShipEntity player;
     RectangleEntity ground;
     RectangleEntity marker1;
     RectangleEntity marker2;
+
+    // Time Control.
+    private double accumulator;
+    private double currentTime;
+    private float step = 1f / 60.0f;
 
     float V_WIDTH = 480;
     float V_HEIGHT = 800;
@@ -51,18 +59,20 @@ public class GameScreen extends DefaultScreen {
     public GameScreen(Game game, Level levelData) {
         super(game);
         this.levelData = levelData;
+        this.planet = levelData.planet;
+
         cam = new BoundedCamera();
         cam.setToOrtho(false, V_WIDTH, V_HEIGHT); // Screen V_WIDTH and V_HEIGHT
-        cam.setBounds(-800, 800, -500, 2000);
+        cam.setBounds(planet.bounds.xMin, planet.bounds.xMax, planet.bounds.yMin, planet.bounds.yMax);
 
         hudCam = new OrthographicCamera();
         hudCam.setToOrtho(false, V_WIDTH, V_HEIGHT);
 
         b2dCam = new BoundedCamera();
         b2dCam.setToOrtho(false, V_WIDTH / PPM, V_HEIGHT / PPM);
-        b2dCam.setBounds(-800 / PPM, 800 / PPM, -500 / PPM, 2000 / PPM);
+        b2dCam.setBounds(planet.bounds.xMin / PPM, planet.bounds.xMax / PPM, planet.bounds.yMin / PPM, planet.bounds.yMax / PPM);
 
-        world = new World(levelData.gravity, true);
+        world = new World(planet.gravity, true);
     }
 
     @Override
@@ -74,7 +84,7 @@ public class GameScreen extends DefaultScreen {
 
         player = shipFact.createShip(levelData, 0, 0, "images/dropship.png");
 
-        ground = rectFact.createRectangleEntity(1, 0 - V_HEIGHT / 4, V_WIDTH * 4, V_HEIGHT / 2, "images/ground.png");
+        ground = rectFact.createRectangleEntity(1, 0 - V_HEIGHT / 4, V_WIDTH * 4, V_HEIGHT / 2, planet.groundImage);
 
         marker1 = rectFact.createRectangleEntity(-30, 0, 10, 10, "images/marker.png");
         marker2 = rectFact.createRectangleEntity(100, 100, 10, 10, "images/marker.png");
@@ -107,6 +117,7 @@ public class GameScreen extends DefaultScreen {
 
     @Override
     public void render(float delta) {
+
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -140,13 +151,13 @@ public class GameScreen extends DefaultScreen {
         sb.setProjectionMatrix(hudCam.combined);
         float altitude = player.getPosition().y * PPM - player.sprite.getHeight() / 2;
         Vector2 velocity = player.body.getLinearVelocityFromWorldPoint(new Vector2(0f, 0f));
-        hud1.setText("Altitude: " + (int) altitude);
-        hud2.setText("Velocity: " + (int) Math.abs(velocity.y * PPM));
+        hud1.setText((int) altitude + "m");
+        hud2.setText((int) Math.abs(velocity.y * PPM) + "m/s");
 //        hud2.setText("Pos: " + (int) cam.position.x + "/" + (int) cam.position.y);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
 
-        world.step(1/60f, 6, 2);
+        world.step(step, 6, 2);
     }
 
     @Override
