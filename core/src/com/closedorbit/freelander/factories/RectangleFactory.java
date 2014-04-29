@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.closedorbit.freelander.entities.RectangleEntity;
 
-import static com.closedorbit.freelander.utilities.B2DVars.PPM;
+import static com.closedorbit.freelander.utilities.Vars.PPM;
 
 public class RectangleFactory {
 

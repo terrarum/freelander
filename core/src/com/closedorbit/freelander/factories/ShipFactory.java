@@ -3,12 +3,11 @@ package com.closedorbit.freelander.factories;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.closedorbit.freelander.entities.ShipEntity;
 import com.closedorbit.freelander.levelPackLoader.Level;
 
-import static com.closedorbit.freelander.utilities.B2DVars.PPM;
+import static com.closedorbit.freelander.utilities.Vars.PPM;
 
 /**
  * Created by terrarum on 28/04/14.
@@ -53,6 +52,7 @@ public class ShipFactory {
         ShipEntity ship = new ShipEntity();
         ship.sprite = sprite;
         ship.body = body;
+        ship.thrust = levelData.ship.thrust;
 
         return ship;
     }

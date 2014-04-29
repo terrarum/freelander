@@ -1,12 +1,9 @@
 package com.closedorbit.freelander.entities;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
 
-import static com.closedorbit.freelander.utilities.B2DVars.PPM;
+import static com.closedorbit.freelander.utilities.Vars.PPM;
 
 public class ShipEntity extends Entity {
 

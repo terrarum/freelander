@@ -3,7 +3,11 @@ package com.closedorbit.freelander.utilities;
 /**
  * Created by terrarum on 28/04/14.
  */
-public class B2DVars {
+public class Vars {
     // Four pixels equals one meter.
     public static final float PPM = 4f;
+
+    // Game viewport width and height.
+    public static final float V_WIDTH = 480;
+    public static final float V_HEIGHT = 800;
 }

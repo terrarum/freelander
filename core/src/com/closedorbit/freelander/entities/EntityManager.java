@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
 
-import static com.closedorbit.freelander.utilities.B2DVars.PPM;
+import static com.closedorbit.freelander.utilities.Vars.PPM;
 
 /*
     Entity Manager. Maintains a list of Entities and renders them.

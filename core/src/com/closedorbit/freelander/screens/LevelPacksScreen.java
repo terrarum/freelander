@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.closedorbit.freelander.FontBuilder;
 import com.closedorbit.freelander.levelPackLoader.LevelPack;
 import com.closedorbit.freelander.levelPackLoader.LevelPackLoader;
+import com.closedorbit.freelander.utilities.Vars;
 
 import java.util.ArrayList;
 
@@ -36,10 +37,9 @@ public class LevelPacksScreen extends DefaultScreen {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        batch.getProjectionMatrix().setToOrtho2D(0, 0, 480, 800);
-
-        // Create UI.
         skin = new Skin();
+
+        batch.getProjectionMatrix().setToOrtho2D(0, 0, Vars.V_WIDTH, Vars.V_HEIGHT);
 
         // Add fonts to skin.
         fontBuilder = new FontBuilder();

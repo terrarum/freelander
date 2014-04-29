@@ -1,8 +1,8 @@
 package com.closedorbit.freelander;
 
-public class Game {
+public class GameLoop {
 
-    public Game() {
+    public GameLoop() {
 
     }
 
@@ -15,6 +15,6 @@ public class Game {
     }
 
     public void dispose() {
-
+        
     }
 }
