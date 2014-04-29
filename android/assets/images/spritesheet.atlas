@@ -38,6 +38,13 @@ groundTile
   orig: 100, 100
   offset: 0, 0
   index: -1
+marker
+  rotate: false
+  xy: 710, 114
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
 
 spritesheet2.png
 format: RGBA8888
