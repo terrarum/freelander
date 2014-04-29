@@ -25,7 +25,7 @@ import com.closedorbit.freelander.utilities.Vars;
 
 public class GameScreen extends DefaultScreen {
 
-    GameLoop gameLoop = new GameLoop();
+    GameLoop gameLoop;
 
     // Sprite renderer.
     SpriteBatch sb;
@@ -33,10 +33,6 @@ public class GameScreen extends DefaultScreen {
     Level levelData;
     // Box2d world.
     World world;
-
-    // BOx2d camera. Only used for debug.
-    BoundedCamera b2dCam;
-    Box2DDebugRenderer debugRenderer;
 
     // Sprite cam.
     BoundedCamera cam;
@@ -62,6 +58,7 @@ public class GameScreen extends DefaultScreen {
 
     public GameScreen(Game game, Level levelData) {
         super(game);
+
         this.levelData = levelData;
         this.planet = levelData.planet;
 
@@ -74,21 +71,17 @@ public class GameScreen extends DefaultScreen {
         hudCam = new OrthographicCamera();
         hudCam.setToOrtho(false, Vars.V_WIDTH, Vars.V_HEIGHT);
 
-        b2dCam = new BoundedCamera();
-        b2dCam.setToOrtho(false, Vars.V_WIDTH / Vars.PPM, Vars.V_HEIGHT / Vars.PPM);
-        b2dCam.setBounds(planet.bounds.xMin / Vars.PPM, planet.bounds.xMax / Vars.PPM, planet.bounds.yMin / Vars.PPM, planet.bounds.yMax / Vars.PPM);
-
         world = new World(planet.gravity, true);
     }
 
     @Override
     public void show() {
-        debugRenderer = new Box2DDebugRenderer();
+        ShipFactory shipFact = new ShipFactory(world);
+        player = shipFact.createShip(levelData, 0, 0, "images/dropship.png");
+        gameLoop = new GameLoop(levelData, world, player);
 
         RectangleFactory rectFact = new RectangleFactory(world);
-        ShipFactory shipFact = new ShipFactory(world);
 
-        player = shipFact.createShip(levelData, 0, 0, "images/dropship.png");
 
         RectangleEntity ground = rectFact.createRectangleEntity(1, 0 - Vars.V_HEIGHT / 4, Vars.V_WIDTH * 4, Vars.V_HEIGHT / 2, planet.groundImage);
 
@@ -99,11 +92,8 @@ public class GameScreen extends DefaultScreen {
         entityManager.addEntity(marker1);
         entityManager.addEntity(marker2);
 
-//        cam.position.set(player.getPosition().x, player.getPosition().y - 100, 0);
         cam.setPosition(0, 0);
         cam.update();
-        b2dCam.setPosition(0 / Vars.PPM, 0 / Vars.PPM);
-        b2dCam.update();
 
         sb = new SpriteBatch();
         sb.getProjectionMatrix().setToOrtho2D(0, 0, Vars.V_WIDTH, Vars.V_HEIGHT);
@@ -127,9 +117,11 @@ public class GameScreen extends DefaultScreen {
 
     @Override
     public void render(float delta) {
-
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        gameLoop.update();
+        gameLoop.render();
 
         // Input.
         if (Gdx.input.isTouched()) {
@@ -137,15 +129,8 @@ public class GameScreen extends DefaultScreen {
         }
 
         // Camera follow player.
-//        cam.setPosition(player.getPosition().x * Vars.PPM + Vars.V_WIDTH / 4, player.getPosition().y * Vars.PPM + Vars.V_HEIGHT / 4);
         cam.setPosition(player.getPosition().x * Vars.PPM, player.getPosition().y * Vars.PPM);
         cam.update();
-
-        // Box2d debug.
-//        b2dCam.setPosition(player.getPosition().x + Vars.V_WIDTH / 4 / Vars.PPM, player.getPosition().y + Vars.V_HEIGHT / 4 / Vars.PPM);
-        b2dCam.setPosition(player.getPosition().x, player.getPosition().y);
-        b2dCam.update();
-        debugRenderer.render(world, b2dCam.combined);
 
         // Game.
         sb.setProjectionMatrix(cam.combined);
@@ -167,6 +152,7 @@ public class GameScreen extends DefaultScreen {
     @Override
     public void hide() {
         world.dispose();
+        gameLoop.dispose();
     }
 
 }
