@@ -5,42 +5,49 @@ filter: Nearest,Nearest
 repeat: none
 button
   rotate: false
-  xy: 2, 49
+  xy: 2, 14
   size: 200, 75
   orig: 200, 75
   offset: 0, 0
   index: -1
 button-disabled
   rotate: false
-  xy: 204, 49
+  xy: 204, 14
   size: 200, 75
   orig: 200, 75
   offset: 0, 0
   index: -1
 button-down
   rotate: false
-  xy: 406, 49
+  xy: 406, 14
   size: 200, 75
   orig: 200, 75
   offset: 0, 0
   index: -1
 dropship
   rotate: false
-  xy: 2, 2
+  xy: 608, 44
   size: 24, 45
   orig: 24, 45
   offset: 0, 0
   index: -1
+ground
+  rotate: false
+  xy: 2, 91
+  size: 1920, 400
+  orig: 1920, 400
+  offset: 0, 0
+  index: -1
 groundTile
   rotate: false
-  xy: 608, 24
+  xy: 1924, 391
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 marker
   rotate: false
-  xy: 710, 114
+  xy: 2, 2
   size: 10, 10
   orig: 10, 10
   offset: 0, 0

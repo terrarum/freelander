@@ -41,8 +41,10 @@ public class GameScreen extends DefaultScreen {
     Label hud2;
 
     ShipEntity player;
+    RectangleEntity ground;
     RectangleEntity marker1;
-    
+    RectangleEntity marker2;
+
     float V_WIDTH = 480;
     float V_HEIGHT = 800;
 
@@ -72,9 +74,10 @@ public class GameScreen extends DefaultScreen {
 
         player = shipFact.createShip(levelData, 0, 0, "images/dropship.png");
 
-        rectFact.createRectangleEntity(1, 0 - V_HEIGHT / 4, V_WIDTH * 4, V_HEIGHT / 2, null);
+        ground = rectFact.createRectangleEntity(1, 0 - V_HEIGHT / 4, V_WIDTH * 4, V_HEIGHT / 2, "images/ground.png");
 
         marker1 = rectFact.createRectangleEntity(-30, 0, 10, 10, "images/marker.png");
+        marker2 = rectFact.createRectangleEntity(100, 100, 10, 10, "images/marker.png");
 
 //        cam.position.set(player.getPosition().x, player.getPosition().y - 100, 0);
         cam.setPosition(0, 0);
@@ -129,6 +132,8 @@ public class GameScreen extends DefaultScreen {
         player.render(sb);
         sb.begin();
         sb.draw(marker1.sprite, marker1.body.getPosition().x * PPM - marker1.sprite.getWidth() / 2, marker1.body.getPosition().y * PPM - marker1.sprite.getHeight() / 2);
+        sb.draw(marker2.sprite, marker2.body.getPosition().x * PPM - marker2.sprite.getWidth() / 2, marker2.body.getPosition().y * PPM - marker2.sprite.getHeight() / 2);
+        sb.draw(ground.sprite, ground.body.getPosition().x * PPM - ground.sprite.getWidth() / 2, ground.body.getPosition().y * PPM - ground.sprite.getHeight() / 2);
         sb.end();
 
         // HUD.
