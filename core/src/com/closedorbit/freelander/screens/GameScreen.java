@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.closedorbit.freelander.FontBuilder;
+import com.closedorbit.freelander.entities.EntityManager;
 import com.closedorbit.freelander.entities.PlanetEntity;
 import com.closedorbit.freelander.entities.RectangleEntity;
 import com.closedorbit.freelander.entities.ShipEntity;
@@ -20,6 +21,7 @@ import com.closedorbit.freelander.factories.RectangleFactory;
 import com.closedorbit.freelander.factories.ShipFactory;
 import com.closedorbit.freelander.levelPackLoader.Level;
 import com.closedorbit.freelander.utilities.BoundedCamera;
+import org.w3c.dom.css.Rect;
 
 import static com.closedorbit.freelander.utilities.B2DVars.PPM;
 
@@ -44,9 +46,8 @@ public class GameScreen extends DefaultScreen {
 
     PlanetEntity planet;
     ShipEntity player;
-    RectangleEntity ground;
-    RectangleEntity marker1;
-    RectangleEntity marker2;
+
+    EntityManager entityManager;
 
     // Time Control.
     private double accumulator;
@@ -60,6 +61,8 @@ public class GameScreen extends DefaultScreen {
         super(game);
         this.levelData = levelData;
         this.planet = levelData.planet;
+
+        entityManager = new EntityManager();
 
         cam = new BoundedCamera();
         cam.setToOrtho(false, V_WIDTH, V_HEIGHT); // Screen V_WIDTH and V_HEIGHT
@@ -84,10 +87,14 @@ public class GameScreen extends DefaultScreen {
 
         player = shipFact.createShip(levelData, 0, 0, "images/dropship.png");
 
-        ground = rectFact.createRectangleEntity(1, 0 - V_HEIGHT / 4, V_WIDTH * 4, V_HEIGHT / 2, planet.groundImage);
+        RectangleEntity ground = rectFact.createRectangleEntity(1, 0 - V_HEIGHT / 4, V_WIDTH * 4, V_HEIGHT / 2, planet.groundImage);
 
-        marker1 = rectFact.createRectangleEntity(-30, 0, 10, 10, "images/marker.png");
-        marker2 = rectFact.createRectangleEntity(100, 100, 10, 10, "images/marker.png");
+        RectangleEntity marker1 = rectFact.createRectangleEntity(-30, 0, 10, 10, "images/marker.png");
+        RectangleEntity marker2 = rectFact.createRectangleEntity(100, 100, 10, 10, "images/marker.png");
+
+        entityManager.addEntity(ground);
+        entityManager.addEntity(marker1);
+        entityManager.addEntity(marker2);
 
 //        cam.position.set(player.getPosition().x, player.getPosition().y - 100, 0);
         cam.setPosition(0, 0);
@@ -124,7 +131,7 @@ public class GameScreen extends DefaultScreen {
         // Input.
         if (Gdx.input.isTouched()) {
             Vector2 force = new Vector2(0, 400);
-            player.body.applyForce(force, player.body.getWorldCenter(), true);
+            player.body.applyForce(player.thrust, player.body.getWorldCenter(), true);
         }
 
         // Camera follow player.
@@ -141,11 +148,7 @@ public class GameScreen extends DefaultScreen {
         // Game.
         sb.setProjectionMatrix(cam.combined);
         player.render(sb);
-        sb.begin();
-        sb.draw(marker1.sprite, marker1.body.getPosition().x * PPM - marker1.sprite.getWidth() / 2, marker1.body.getPosition().y * PPM - marker1.sprite.getHeight() / 2);
-        sb.draw(marker2.sprite, marker2.body.getPosition().x * PPM - marker2.sprite.getWidth() / 2, marker2.body.getPosition().y * PPM - marker2.sprite.getHeight() / 2);
-        sb.draw(ground.sprite, ground.body.getPosition().x * PPM - ground.sprite.getWidth() / 2, ground.body.getPosition().y * PPM - ground.sprite.getHeight() / 2);
-        sb.end();
+        entityManager.render(sb);
 
         // HUD.
         sb.setProjectionMatrix(hudCam.combined);

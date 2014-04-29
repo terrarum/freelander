@@ -8,12 +8,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 
 import static com.closedorbit.freelander.utilities.B2DVars.PPM;
 
-/**
- * Created by terrarum on 29/04/14.
- */
-public class ShipEntity {
-    public Sprite sprite;
-    public Body body;
+public class ShipEntity extends Entity {
+
     public Vector2 thrust;
     public Vector2 startingVelocity;
     public Vector2 startingPosition;
