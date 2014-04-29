@@ -7,44 +7,74 @@
             levels: [
                 {
                     id: 1,
-                    name: "Touchdown"
+                    name: "Touchdown",
+                    ship: {
+                        startingPosition: {
+                            x: 0,
+                            y: 2000
+                        },
+                        thrust: {
+                            x: 0,
+                            y: 400
+                        },
+                        startingVelocity: {
+                            x: 0,
+                            y: -200
+                        }
+                    },
+                    planet: {
+                        groundImage: "images/ground.png",
+                        bounds: {
+                            xMin: -800,
+                            xMax: 800,
+                            yMin: -400,
+                            yMax: 2000
+                        },
+                        gravity: {
+                            x: 0,
+                            y: -1.622
+                        },
+                    }
                 },
-                {
-                    id: 2,
-                    name: "Reconnaissance"
-                },
-                {
-                    id: 3,
-                    name: "Water"
-                },
-                {
-                    id: 4,
-                    name: "Return to Base"
-                }
+//                {
+//                    id: 2,
+//                    name: "Reconnaissance",
+//                    gravity: 1.622
+//                },
+//                {
+//                    id: 3,
+//                    name: "Water",
+//                    gravity: 1.622
+//                },
+//                {
+//                    id: 4,
+//                    name: "Return to Base",
+//                    gravity: 1.622
+//                }
             ]
         },
-        {
-            id: 2,
-            name: "Mission to Mars",
-            image: "missiontomars",
-            levels: [
-                {
-                    id: 1,
-                    name: "Red Planet"
-                },
-                {
-                    id: 2,
-                    name: "Signs of Life"
-                },
-                {
-                    id: 3,
-                    name: "Delivery"
-                },
-                {
-                    id: 4,
-                    name: "Fresh Tracks"
-                }
-            ]
-        }
+//        {
+//            id: 2,
+//            name: "Mission to Mars",
+//            image: "missiontomars",
+//            levels: [
+//                {
+//                    id: 1,
+//                    name: "Red Planet"
+//                },
+//                {
+//                    id: 2,
+//                    name: "Signs of Life"
+//                },
+//                {
+//                    id: 3,
+//                    name: "Delivery"
+//                },
+//                {
+//                    id: 4,
+//                    name: "Fresh Tracks"
+//                }
+//            ]
+//        }
     ]
 }

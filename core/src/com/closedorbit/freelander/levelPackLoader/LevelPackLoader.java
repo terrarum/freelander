@@ -1,4 +1,4 @@
-package com.closedorbit.freelander.LevelPackLoader;
+package com.closedorbit.freelander.levelPackLoader;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
