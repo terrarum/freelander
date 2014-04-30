@@ -29,7 +29,7 @@ public class EntityFactory {
         int tHeight = texture.getHeight();
         Sprite sprite = new Sprite(texture, 0, 0, tWidth, tHeight);
         sprite.setPosition(x, y);
-
+        texture.dispose();
         entity.sprite = sprite;
         return entity;
     }

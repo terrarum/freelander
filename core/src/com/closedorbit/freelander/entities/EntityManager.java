@@ -48,11 +48,11 @@ public class EntityManager {
 
     // Render all parallax entities.
     public void renderPar(SpriteBatch sb) {
+        sb.begin();
         for (Entity entity : parEntities) {
-            sb.begin();
             sb.draw(entity.sprite, entity.sprite.getX(), entity.sprite.getY());
-            sb.end();
         }
+        sb.end();
     }
 
 }
