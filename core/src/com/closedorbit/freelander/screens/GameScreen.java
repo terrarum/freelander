@@ -85,6 +85,8 @@ public class GameScreen extends DefaultScreen {
         // Render the game.
         sb.setProjectionMatrix(cam.combined);
         gameLoop.render(sb);
+
+        // Should really be handled by the entity manager.
         player.render(sb);
 
         // Render the HUD.

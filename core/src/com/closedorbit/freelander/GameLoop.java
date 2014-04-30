@@ -62,10 +62,10 @@ public class GameLoop {
 
         int STARS = 500;
         int i = 0;
-        float xMin = -480;
-        float xMax = 480;
-        float yMin = -300;
-        float yMax = 3000;
+        float xMin = levelData.planet.bounds.xMin;
+        float xMax = levelData.planet.bounds.xMax;
+        float yMin = levelData.planet.bounds.yMin;
+        float yMax = levelData.planet.bounds.yMax;
         while (i < STARS) {
             float x = xMin + (int)(Math.random() * ((xMax - xMin) + 1));
             float y = yMin + (int)(Math.random() * ((yMax - yMin) + 1));
