@@ -4,16 +4,14 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.closedorbit.freelander.FontBuilder;
+import com.closedorbit.freelander.utilities.Vars;
 
 public class MainMenu extends DefaultScreen {
 
@@ -33,7 +31,7 @@ public class MainMenu extends DefaultScreen {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        batch.getProjectionMatrix().setToOrtho2D(0, 0, 480, 800);
+        batch.getProjectionMatrix().setToOrtho2D(0, 0, Vars.V_WIDTH, Vars.V_HEIGHT);
 
         // Create UI.
         skin = new Skin();
