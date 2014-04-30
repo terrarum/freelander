@@ -24,9 +24,16 @@ button-down
   orig: 200, 75
   offset: 0, 0
   index: -1
+dome1
+  rotate: false
+  xy: 1924, 358
+  size: 100, 31
+  orig: 100, 31
+  offset: 0, 0
+  index: -1
 dropship
   rotate: false
-  xy: 608, 44
+  xy: 706, 44
   size: 24, 45
   orig: 24, 45
   offset: 0, 0
@@ -43,6 +50,13 @@ groundTile
   xy: 1924, 391
   size: 100, 100
   orig: 100, 100
+  offset: 0, 0
+  index: -1
+landingpad
+  rotate: false
+  xy: 608, 43
+  size: 96, 46
+  orig: 96, 46
   offset: 0, 0
   index: -1
 marker

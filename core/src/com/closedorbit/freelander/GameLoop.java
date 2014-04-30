@@ -5,9 +5,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.closedorbit.freelander.entities.EntityManager;
+import com.closedorbit.freelander.entities.PlanetEntity;
 import com.closedorbit.freelander.entities.RectangleEntity;
 import com.closedorbit.freelander.entities.ShipEntity;
-import com.closedorbit.freelander.factories.RectangleFactory;
+import com.closedorbit.freelander.factories.EntityFactory;
 import com.closedorbit.freelander.levelPackLoader.Level;
 import com.closedorbit.freelander.utilities.BoundedCamera;
 import com.closedorbit.freelander.utilities.Vars;
@@ -31,13 +32,17 @@ public class GameLoop {
 
         entityManager = new EntityManager();
 
-        RectangleFactory rectFact = new RectangleFactory(world);
+        EntityFactory entFact = new EntityFactory(world);
 
-        RectangleEntity ground = rectFact.createRectangleEntity(1, 0 - Vars.V_HEIGHT / 4, Vars.V_WIDTH * 4, Vars.V_HEIGHT / 2, levelData.planet.groundImage);
+        RectangleEntity ground = entFact.createRectangleEntity(1, 0 - Vars.V_HEIGHT / 4, Vars.V_WIDTH * 4, Vars.V_HEIGHT / 2, levelData.planet.groundImage);
 
         entityManager.addEntity(ground);
-        entityManager.addEntity(rectFact.createRectangleEntity(-30, 0, 10, 10, "images/marker.png"));
-        entityManager.addEntity(rectFact.createRectangleEntity(100, 100, 10, 10, "images/marker.png"));
+        entityManager.addEntity(entFact.createRectangleEntity(-30, 0, 10, 10, "marker"));
+        entityManager.addEntity(entFact.createRectangleEntity(100, 100, 10, 10, "marker"));
+        // Create sprites for each building. They do not need a box2d body.
+        for (PlanetEntity.Building building : levelData.planet.buildings) {
+            entityManager.addEntity(entFact.createSpriteEntity(building.position.x, building.position.y, building.image));
+        }
 
         // Created bounded Box2d camera.
         b2dCam = new BoundedCamera();

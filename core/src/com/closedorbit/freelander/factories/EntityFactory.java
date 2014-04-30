@@ -9,18 +9,32 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.closedorbit.freelander.entities.RectangleEntity;
+import com.closedorbit.freelander.entities.SpriteEntity;
 
 import static com.closedorbit.freelander.utilities.Vars.PPM;
 
-public class RectangleFactory {
+public class EntityFactory {
 
     private World world;
 
-    public RectangleFactory(World world) {
+    public EntityFactory(World world) {
         this.world = world;
     }
 
-    public RectangleEntity createRectangleEntity(float x, float y, float w, float h, String imageUrl) {
+    public SpriteEntity createSpriteEntity(float x, float y, String imageName) {
+        SpriteEntity entity = new SpriteEntity();
+
+        Texture texture = new Texture(Gdx.files.internal("images/" + imageName + ".png"));
+        int tWidth = texture.getWidth();
+        int tHeight = texture.getHeight();
+        Sprite sprite = new Sprite(texture, 0, 0, tWidth, tHeight);
+        sprite.setPosition(x, y);
+
+        entity.sprite = sprite;
+        return entity;
+    }
+
+    public RectangleEntity createRectangleEntity(float x, float y, float w, float h, String imageName) {
         RectangleEntity entity = new RectangleEntity();
 
         BodyDef boxDef = new BodyDef();
@@ -31,8 +45,8 @@ public class RectangleFactory {
         boxBody.createFixture(boxShape, 0.0f);
         boxShape.dispose();
 
-        if (imageUrl != null) {
-            Texture texture = new Texture(Gdx.files.internal(imageUrl));
+        if (imageName != null) {
+            Texture texture = new Texture(Gdx.files.internal("images/" + imageName + ".png"));
             int tWidth = texture.getWidth();
             int tHeight = texture.getHeight();
             Sprite sprite = new Sprite(texture, 0, 0, tWidth, tHeight);

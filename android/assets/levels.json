@@ -23,7 +23,7 @@
                         }
                     },
                     planet: {
-                        groundImage: "images/ground.png",
+                        groundImage: "ground",
                         bounds: {
                             xMin: -800,
                             xMax: 800,
@@ -34,6 +34,24 @@
                             x: 0,
                             y: -1.622
                         },
+                        buildings: [
+                            {
+                                name: "Landing Pad",
+                                image: "landingpad",
+                                position: {
+                                    y: 0,
+                                    x: -50
+                                }
+                            },
+                            {
+                                name: "Moon Base",
+                                image: "dome1",
+                                position: {
+                                    y: 0,
+                                    x: 100
+                                }
+                            }
+                        ]
                     }
                 },
 //                {

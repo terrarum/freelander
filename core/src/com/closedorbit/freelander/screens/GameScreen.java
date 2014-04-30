@@ -72,7 +72,7 @@ public class GameScreen extends DefaultScreen {
     @Override
     public void render(float delta) {
         // Clear the screen.
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Update everything.

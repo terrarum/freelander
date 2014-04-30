@@ -27,7 +27,14 @@ public class EntityManager {
     public void render(SpriteBatch sb) {
         for (Entity entity : entities) {
             sb.begin();
-            sb.draw(entity.sprite, entity.body.getPosition().x * PPM - entity.sprite.getWidth() / 2, entity.body.getPosition().y * PPM - entity.sprite.getHeight() / 2);
+            // Draw sprite-only entity.
+            if (entity.body == null) {
+                sb.draw(entity.sprite, entity.sprite.getX(), entity.sprite.getY());
+            }
+            // Draw box2d entity.
+            else {
+                sb.draw(entity.sprite, entity.body.getPosition().x * PPM - entity.sprite.getWidth() / 2, entity.body.getPosition().y * PPM - entity.sprite.getHeight() / 2);
+            }
             sb.end();
         }
     }
