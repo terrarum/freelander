@@ -40,7 +40,7 @@
                                 image: "landingpad",
                                 position: {
                                     y: 0,
-                                    x: -50
+                                    x: -100
                                 }
                             },
                             {
@@ -48,7 +48,7 @@
                                 image: "dome1",
                                 position: {
                                     y: 0,
-                                    x: 100
+                                    x: 150
                                 }
                             }
                         ]

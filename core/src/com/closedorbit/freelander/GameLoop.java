@@ -23,6 +23,8 @@ public class GameLoop {
     Level levelData;
     World world;
 
+    Boolean debug = false;
+
     EntityManager entityManager;
 
     public GameLoop(Level levelData, World world, ShipEntity player) {
@@ -37,26 +39,28 @@ public class GameLoop {
         RectangleEntity ground = entFact.createRectangleEntity(1, 0 - Vars.V_HEIGHT / 4, Vars.V_WIDTH * 4, Vars.V_HEIGHT / 2, levelData.planet.groundImage);
 
         entityManager.addEntity(ground);
-        entityManager.addEntity(entFact.createRectangleEntity(-30, 0, 10, 10, "marker"));
-        entityManager.addEntity(entFact.createRectangleEntity(100, 100, 10, 10, "marker"));
         // Create sprites for each building. They do not need a box2d body.
         for (PlanetEntity.Building building : levelData.planet.buildings) {
             entityManager.addEntity(entFact.createSpriteEntity(building.position.x, building.position.y, building.image));
         }
 
         // Created bounded Box2d camera.
-        b2dCam = new BoundedCamera();
-        b2dCam.setToOrtho(false, Vars.V_WIDTH / Vars.PPM, Vars.V_HEIGHT / Vars.PPM);
-        b2dCam.setBounds(levelData.planet.bounds.xMin / Vars.PPM, levelData.planet.bounds.xMax / Vars.PPM, levelData.planet.bounds.yMin / Vars.PPM, levelData.planet.bounds.yMax / Vars.PPM);
-        b2dCam.update();
+        if (debug) {
+            b2dCam = new BoundedCamera();
+            b2dCam.setToOrtho(false, Vars.V_WIDTH / Vars.PPM, Vars.V_HEIGHT / Vars.PPM);
+            b2dCam.setBounds(levelData.planet.bounds.xMin / Vars.PPM, levelData.planet.bounds.xMax / Vars.PPM, levelData.planet.bounds.yMin / Vars.PPM, levelData.planet.bounds.yMax / Vars.PPM);
+            b2dCam.update();
 
-        // Create Box2d renderer.
-        b2dr = new Box2DDebugRenderer();
+            // Create Box2d renderer.
+            b2dr = new Box2DDebugRenderer();
+        }
     }
 
     public void update() {
-        b2dCam.setPosition(player.getPosition().x, player.getPosition().y);
-        b2dCam.update();
+        if (debug) {
+            b2dCam.setPosition(player.getPosition().x, player.getPosition().y);
+            b2dCam.update();
+        }
 
         // Input.
         if (Gdx.input.isTouched()) {
@@ -68,10 +72,11 @@ public class GameLoop {
 
         entityManager.render(sb);
 
-        b2dr.render(world, b2dCam.combined);
+        if (debug) {
+            b2dr.render(world, b2dCam.combined);
+        }
     }
 
     public void dispose() {
-        b2dr.dispose();
     }
 }
