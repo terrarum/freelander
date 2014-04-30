@@ -12,15 +12,22 @@ import static com.closedorbit.freelander.utilities.Vars.PPM;
 
 public class EntityManager {
     private ArrayList<Entity> entities;
+    private ArrayList<Entity> parEntities;
 
     // Create new ArrayList.
     public EntityManager() {
         entities = new ArrayList<Entity>();
+        parEntities = new ArrayList<Entity>();
     }
 
     // Add an entity to the manager.
     public void addEntity(Entity entity) {
         entities.add(entity);
+    }
+
+    // Add an entity to the manager.
+    public void addParEntity(Entity entity) {
+        parEntities.add(entity);
     }
 
     // Render all of the managed entities.
@@ -35,6 +42,15 @@ public class EntityManager {
             else {
                 sb.draw(entity.sprite, entity.body.getPosition().x * PPM - entity.sprite.getWidth() / 2, entity.body.getPosition().y * PPM - entity.sprite.getHeight() / 2);
             }
+            sb.end();
+        }
+    }
+
+    // Render all parallax entities.
+    public void renderPar(SpriteBatch sb) {
+        for (Entity entity : parEntities) {
+            sb.begin();
+            sb.draw(entity.sprite, entity.sprite.getX(), entity.sprite.getY());
             sb.end();
         }
     }
