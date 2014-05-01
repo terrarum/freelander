@@ -11,9 +11,19 @@ public class ShipEntity extends Entity {
     public Vector2 thrust;
     public Vector2 startingVelocity;
     public Vector2 startingPosition;
+    public float startingHealth;
 
     private float altitude;
     private Vector2 velocity;
+    private float health;
+
+    public float getHealth() {
+        return health;
+    }
+
+    public void setHealth(float health) {
+        this.health = health;
+    }
 
     public Vector2 getPosition() {
         return this.body.getPosition();

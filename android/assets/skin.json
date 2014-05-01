@@ -17,6 +17,7 @@
         default: { up: button, down: button-down, checked: button-down, disabled: button-disabled },
         transparent: { },
     },
+
     com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
         default: { up: button, down: button-down, checked: button-down, disabled: button-disabled, font: normal-font, fontColor: white },
     }
