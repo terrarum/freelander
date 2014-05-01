@@ -60,7 +60,7 @@ public class GameScreen extends DefaultScreen {
     public void show() {
         ShipFactory shipFact = new ShipFactory(world);
         player = shipFact.createShip(levelData, 0, 0, "images/dropship.png");
-        gameLoop = new GameLoop(levelData, world, player);
+        gameLoop = new GameLoop(levelData, world, player, cam);
 
         hud = new GameHUD();
         hud.create();
@@ -72,23 +72,21 @@ public class GameScreen extends DefaultScreen {
     @Override
     public void render(float delta) {
         // Clear the screen.
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Update everything.
-        // Camera follow player.
-        cam.setPosition(player.getPosition().x * Vars.PPM, player.getPosition().y * Vars.PPM);
-        cam.update();
-        // Update game.
-        gameLoop.update();
         // Update player stats.
         player.update();
+        // Update game.
+        gameLoop.update();
         // Update HUD.
         hud.update(player);
 
         // Render the game.
         sb.setProjectionMatrix(cam.combined);
         gameLoop.render(sb);
+
+        // Should really be handled by the entity manager.
         player.render(sb);
 
         // Render the HUD.

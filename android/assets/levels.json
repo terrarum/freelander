@@ -15,7 +15,7 @@
                         },
                         thrust: {
                             x: 0,
-                            y: 400
+                            y: 800
                         },
                         startingVelocity: {
                             x: 0,
@@ -39,16 +39,16 @@
                                 name: "Landing Pad",
                                 image: "landingpad",
                                 position: {
-                                    y: 0,
-                                    x: -50
+                                    y: -3,
+                                    x: -100
                                 }
                             },
                             {
                                 name: "Moon Base",
                                 image: "dome1",
                                 position: {
-                                    y: 0,
-                                    x: 100
+                                    y: -3,
+                                    x: 150
                                 }
                             }
                         ]

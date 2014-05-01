@@ -2,10 +2,6 @@ package com.closedorbit.freelander.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.closedorbit.freelander.FontBuilder;
 
 public abstract class DefaultScreen implements Screen {
     final Game game;

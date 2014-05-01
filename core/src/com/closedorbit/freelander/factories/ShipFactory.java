@@ -9,9 +9,6 @@ import com.closedorbit.freelander.levelPackLoader.Level;
 
 import static com.closedorbit.freelander.utilities.Vars.PPM;
 
-/**
- * Created by terrarum on 28/04/14.
- */
 public class ShipFactory {
 
     World world;

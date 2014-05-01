@@ -10,4 +10,8 @@ public class Vars {
     // Game viewport width and height.
     public static final float V_WIDTH = 480;
     public static final float V_HEIGHT = 800;
+
+    public static float getRandom(float min, float max) {
+        return min + (int)(Math.random() * ((max - min) + 1));
+    }
 }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.closedorbit.freelander.entities.ShipEntity;
+import com.closedorbit.freelander.utilities.FontBuilder;
 import com.closedorbit.freelander.utilities.Vars;
 
 public class GameHUD {
@@ -35,9 +36,9 @@ public class GameHUD {
 
         // Create layout.
         table.setFillParent(true);
-        table.add(altitude).padBottom(20);
+        table.add(altitude).padBottom(30);
         table.row();
-        table.add(velocity).padTop(20);
+        table.add(velocity).padTop(30);
 
         // Add HUD to stage.
         stage.addActor(table);
