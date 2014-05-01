@@ -17,12 +17,12 @@ public class Freelander extends Game {
 
     @Override
 	public void create() {
-//        setScreen(new MainMenu(this));
+        setScreen(new MainMenu(this));
 //        setScreen(new LevelPacksScreen(this));
 
         // Launch game straight to level 1 of levelpack 1.
-        LevelPackLoader loader = new LevelPackLoader();
-        ArrayList<LevelPack> levelPacks = loader.loadLevelPacks();
-        setScreen(new GameScreen(this, levelPacks.get(0).levels.get(0)));
+//        LevelPackLoader loader = new LevelPackLoader();
+//        ArrayList<LevelPack> levelPacks = loader.loadLevelPacks();
+//        setScreen(new GameScreen(this, levelPacks.get(0).levels.get(0)));
 	}
 }
