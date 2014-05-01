@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.closedorbit.freelander.FontBuilder;
+import com.closedorbit.freelander.utilities.FontBuilder;
 import com.closedorbit.freelander.utilities.Vars;
 
 public class MainMenu extends DefaultScreen {

@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.closedorbit.freelander.FontBuilder;
+import com.closedorbit.freelander.utilities.FontBuilder;
 import com.closedorbit.freelander.levelPackLoader.LevelPack;
 import com.closedorbit.freelander.levelPackLoader.LevelPackLoader;
 import com.closedorbit.freelander.utilities.Vars;
