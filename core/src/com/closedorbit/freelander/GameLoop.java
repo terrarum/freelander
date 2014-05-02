@@ -173,9 +173,12 @@ public class GameLoop {
             int touchX = Gdx.input.getX();
             int touchY = Gdx.input.getY();
 
+            float screenH = Gdx.graphics.getHeight();
+            float screenW = Gdx.graphics.getWidth();
+
             // 0/0 is the top left, so flip the Y axis.
-            float touchH = (Vars.V_HEIGHT - touchY) / Vars.V_HEIGHT * 100;
-            float touchW = touchX / Vars.V_WIDTH * 100;
+            float touchW = touchX / screenW * 100;
+            float touchH = (screenH - touchY) / screenH * 100;
 
 //            System.out.println(touchH + "/" + touchY);
 
@@ -184,19 +187,6 @@ public class GameLoop {
 
             // Percentage of the screen from the bottom that should allow fine control of thrust.
             int touchBoxTop = 33;
-
-            // Calculate vertical thrust force.
-            // If the player touches above this point, use full thrust.
-            if (touchH >= touchBoxTop) {
-                thrustY = player.thrust.y;
-            }
-            // If they are within the control area
-            else {
-                // Get percentage of touch in bottom third area.
-                float subH = touchH / touchBoxTop * 100;
-                // Apply that percentage to the ship's max thrust.
-                thrustY = player.thrust.y * (subH / 100);
-            }
 
             // Calculate horizontal thrust force.
             int deadGap = 10; // Middle percentage that gives no horizontal thrust. @TODO might need some friction to reduce horizontal motion.
@@ -211,6 +201,19 @@ public class GameLoop {
             // Otherwise, no horizontal motion.
             else {
                 thrustX = 0;
+            }
+
+            // Calculate vertical thrust force.
+            // If the player touches above this point, use full thrust.
+            if (touchH >= touchBoxTop) {
+                thrustY = player.thrust.y;
+            }
+            // If they are within the control area
+            else {
+                // Get percentage of touch in bottom third area.
+                float subH = touchH / touchBoxTop * 100;
+                // Apply that percentage to the ship's max thrust.
+                thrustY = player.thrust.y * (subH / 100);
             }
 
             player.body.applyForce(new Vector2(thrustX, thrustY), player.body.getWorldCenter(), true);
