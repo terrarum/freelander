@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.closedorbit.freelander.GameHUD;
 import com.closedorbit.freelander.GameLoop;
 import com.closedorbit.freelander.entities.PlanetEntity;
-import com.closedorbit.freelander.entities.ShipEntity;
+import com.closedorbit.freelander.entities.PlayerEntity;
 import com.closedorbit.freelander.factories.ShipFactory;
 import com.closedorbit.freelander.levelPackLoader.Level;
 import com.closedorbit.freelander.utilities.BoundedCamera;
@@ -33,7 +33,7 @@ public class GameScreen extends DefaultScreen {
 
     GameHUD hud;
     PlanetEntity planet;
-    ShipEntity player;
+    PlayerEntity player;
 
     // Time Control.
     private double accumulator;
@@ -59,10 +59,10 @@ public class GameScreen extends DefaultScreen {
     @Override
     public void show() {
         ShipFactory shipFact = new ShipFactory(world);
-        player = shipFact.createShip(levelData, 0, 0, "images/dropship.png");
+        player = shipFact.createPlayer(levelData, 0, 0, "images/dropship.png");
         gameLoop = new GameLoop(levelData, world, player, cam);
 
-        hud = new GameHUD();
+        hud = new GameHUD(player);
         hud.create();
 
         sb = new SpriteBatch();
@@ -80,7 +80,7 @@ public class GameScreen extends DefaultScreen {
         // Update game.
         gameLoop.update();
         // Update HUD.
-        hud.update(player);
+        hud.update();
 
         // Render the game.
         sb.setProjectionMatrix(cam.combined);

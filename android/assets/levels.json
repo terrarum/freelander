@@ -20,7 +20,8 @@
                         startingVelocity: {
                             x: 0,
                             y: -200
-                        }
+                        },
+                        startingHealth: 100
                     },
                     planet: {
                         groundImage: "ground",

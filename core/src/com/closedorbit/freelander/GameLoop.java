@@ -5,8 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.closedorbit.freelander.entities.EntityManager;
 import com.closedorbit.freelander.entities.PlanetEntity;
 import com.closedorbit.freelander.entities.RectangleEntity;
@@ -42,7 +41,10 @@ public class GameLoop {
     float shakeX;
     float shakeY;
 
-    public GameLoop(Level levelData, World world, ShipEntity player, BoundedCamera cam) {
+    ContactListener contactListener;
+    Boolean canDamage = false;
+
+    public GameLoop(Level levelData, World world, final ShipEntity player, BoundedCamera cam) {
         this.levelData = levelData;
         this.world = world;
         this.player = player;
@@ -52,7 +54,7 @@ public class GameLoop {
 
         EntityFactory entFact = new EntityFactory(world);
 
-        RectangleEntity ground = entFact.createRectangleEntity(1, 0 - Vars.V_HEIGHT / 4, Vars.V_WIDTH * 4, Vars.V_HEIGHT / 2, levelData.planet.groundImage);
+        final RectangleEntity ground = entFact.createRectangleEntity(1, 0 - Vars.V_HEIGHT / 4, Vars.V_WIDTH * 4, Vars.V_HEIGHT / 2, levelData.planet.groundImage);
 
         entityManager.addEntity(ground);
         // Create sprites for each building. They do not need a box2d body.
@@ -74,26 +76,13 @@ public class GameLoop {
         }
 
         // box2d lights.
-//        RayHandler.setGammaCorrection(true);
-//        RayHandler.useDiffuseLight(true);
         rayHandler = new RayHandler(world);
-//        rayHandler.setCulling(true);
         rayHandler.setAmbientLight(0.1f, 0.1f, 0.1f, 0.5f);
-//        rayHandler.setCombinedMatrix(cam.combined);
 
         rocketLight = new PointLight(rayHandler, 64);
         rocketLight.setDistance(50);
         rocketLight.setColor(Color.ORANGE);
         rocketLight.attachToBody(player.body, 0, -6);
-
-//        padLightLeft = new PointLight(rayHandler, 64);
-//        padLightRight = new PointLight(rayHandler, 64);
-//        padLightLeft.setColor(Color.YELLOW);
-//        padLightRight.setColor(Color.YELLOW);
-//        padLightLeft.setDistance(30 / Vars.PPM);
-//        padLightRight.setDistance(30 / Vars.PPM);
-//        padLightLeft.setPosition(-90 / Vars.PPM, 1 / Vars.PPM);
-//        padLightRight.setPosition(65 / Vars.PPM, 1 / Vars.PPM);
 
                                                             // distance, x, y, dir, cone
         spotLight = new ConeLight(rayHandler, 64, Color.BLUE, 500 / Vars.PPM, 80 / Vars.PPM, 100 / Vars.PPM, -140, 35);
@@ -105,6 +94,59 @@ public class GameLoop {
         b2dCam.setToOrtho(false, Vars.V_WIDTH / Vars.PPM, Vars.V_HEIGHT / Vars.PPM);
         b2dCam.setBounds(levelData.planet.bounds.xMin / Vars.PPM, levelData.planet.bounds.xMax / Vars.PPM, levelData.planet.bounds.yMin / Vars.PPM, levelData.planet.bounds.yMax / Vars.PPM);
         b2dCam.update();
+
+        contactListener = new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                final Fixture c1 = contact.getFixtureA();
+                final Fixture c2 = contact.getFixtureB();
+                if (c1 != null && c2 != null) {
+                    if ((c1.getBody() == player.body || c2.getBody() == player.body) &&
+                            (c1.getBody() == ground.body || c2.getBody() == ground.body)) {
+                        canDamage = true;
+                        System.out.println("");
+                        System.out.println("CONTACT");
+                        System.out.println("");
+                    }
+                }
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+
+                if (canDamage) {
+                    System.out.println(impulse.getNormalImpulses()[0]);
+                    float impact = impulse.getNormalImpulses()[0];
+                    if (impact < 200) {
+                        System.out.println("Safe");
+                    }
+                    else if (impact < 1500) {
+                        System.out.println("Damage");
+                        float newHealth = player.reduceHealth(impact / 1500 * 100);
+                        if (newHealth == 0) {
+                            System.out.println("Destroyed!");
+                        }
+                    }
+                    else {
+                        System.out.println("Destroyed");
+                        player.setHealth(0);
+                    }
+                    canDamage = false;
+                }
+            }
+        };
+
+        world.setContactListener(contactListener);
 
         // Create Box2d renderer.
         if (debug) {
@@ -151,9 +193,9 @@ public class GameLoop {
         sb.setProjectionMatrix(cam.combined);
         entityManager.render(sb);
 
+        Gdx.graphics.setTitle("Freelander" + " -- FPS: " + Gdx.graphics.getFramesPerSecond());
         if (debug) {
             b2dr.render(world, b2dCam.combined);
-            Gdx.graphics.setTitle("Freelander" + " -- FPS: " + Gdx.graphics.getFramesPerSecond());
         }
         rayHandler.updateAndRender();
     }

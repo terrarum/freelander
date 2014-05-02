@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.*;
-import com.closedorbit.freelander.entities.ShipEntity;
+import com.closedorbit.freelander.entities.PlayerEntity;
 import com.closedorbit.freelander.levelPackLoader.Level;
 
 import static com.closedorbit.freelander.utilities.Vars.PPM;
@@ -17,7 +17,7 @@ public class ShipFactory {
         this.world = world;
     }
 
-    public ShipEntity createShip(Level levelData, float x, float y, String imageUrl) {
+    public PlayerEntity createPlayer(Level levelData, float x, float y, String imageUrl) {
 
         Texture texture = new Texture(Gdx.files.internal("images/dropship.png"));
         Sprite sprite = new Sprite(texture, 0, 0, texture.getWidth(), texture.getHeight());
@@ -46,10 +46,12 @@ public class ShipFactory {
         body.createFixture(fixtureDef);
         shape.dispose();
 
-        ShipEntity ship = new ShipEntity();
+        PlayerEntity ship = new PlayerEntity();
+        body.setUserData(ship);
         ship.sprite = sprite;
         ship.body = body;
         ship.thrust = levelData.ship.thrust;
+        ship.setHealth(levelData.ship.startingHealth);
 
         return ship;
     }
