@@ -121,23 +121,27 @@ public class GameLoop {
 
             @Override
             public void postSolve(Contact contact, ContactImpulse impulse) {
+                // CanDamage indicates that this is the first impact.
                 if (canDamage) {
-                    System.out.println(impulse.getNormalImpulses()[0]);
+                    // Impact force.
                     float impact = impulse.getNormalImpulses()[0];
+
+                    // If the impact force is below 200, the craft has landed without taking damage.
                     if (impact < 200) {
                         System.out.println("Safe");
                         player.landed = true;
                     }
+                    // If the impact force is between 200 and 1500, it will take damage
+                    // according to the force of the impact.
                     else if (impact < 1500) {
-                        System.out.println("Damage");
+                        // Reduce the ships health.
                         float newHealth = player.reduceHealth(impact / 1500 * 100);
-                        if (newHealth == 0) {
-                            System.out.println("Destroyed!");
-                        }
-                        else {
+                        // If the impact hasn't destroyed the ship, mark it as landed.
+                        if (newHealth > 0) {
                             player.landed = true;
                         }
                     }
+                    // If the impact is greater than 1500, the ship has been destroyed.
                     else {
                         player.setHealth(0);
                     }

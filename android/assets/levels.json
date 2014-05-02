@@ -42,7 +42,7 @@
                                 image: "landingpad",
                                 position: {
                                     y: -3,
-                                    x: -100
+                                    x: -75
                                 }
                             },
                             {
