@@ -52,13 +52,6 @@ groundTile
   orig: 100, 100
   offset: 0, 0
   index: -1
-knob
-  rotate: false
-  xy: 2320, 408
-  size: 20, 20
-  orig: 20, 20
-  offset: 0, 0
-  index: -1
 landingpad
   rotate: false
   xy: 1924, 390
@@ -68,7 +61,7 @@ landingpad
   index: -1
 marker
   rotate: false
-  xy: 2522, 495
+  xy: 2320, 418
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
@@ -82,7 +75,7 @@ slider
   index: -1
 star
   rotate: false
-  xy: 1924, 171
+  xy: 2522, 495
   size: 10, 10
   orig: 10, 10
   offset: 0, 0

@@ -21,6 +21,13 @@ public class ShipEntity extends Entity {
         return health;
     }
 
+    public float reduceHealth(float damage) {
+        float currentHealth = getHealth() - damage;
+        currentHealth = currentHealth < 0 ? 0 : currentHealth;
+        setHealth(currentHealth);
+        return currentHealth;
+    }
+
     public void setHealth(float health) {
         this.health = health;
     }

@@ -132,7 +132,10 @@ public class GameLoop {
                     }
                     else if (impact < 1500) {
                         System.out.println("Damage");
-                        player.setHealth(impact / 1500 * 100);
+                        float newHealth = player.reduceHealth(impact / 1500 * 100);
+                        if (newHealth == 0) {
+                            System.out.println("Destroyed!");
+                        }
                     }
                     else {
                         System.out.println("Destroyed");
