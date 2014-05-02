@@ -9,6 +9,7 @@
                     id: 1,
                     name: "Touchdown",
                     ship: {
+                        image: "dropship",
                         startingPosition: {
                             x: 0,
                             y: 2000

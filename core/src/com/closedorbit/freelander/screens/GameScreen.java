@@ -61,11 +61,11 @@ public class GameScreen extends DefaultScreen {
 
     @Override
     public void show() {
-        ShipFactory shipFact = new ShipFactory(world);
-        player = shipFact.createPlayer(levelData, 0, 0, "images/dropship.png");
-        gameLoop = new GameLoop(levelData, world, player, cam);
+        ShipFactory shipFact = new ShipFactory(game, world);
+        player = shipFact.createPlayer(levelData, 0, 0);
+        gameLoop = new GameLoop(game, levelData, world, player, cam);
 
-        hud = new GameHUD(player, game.skin);
+        hud = new GameHUD(game, player, game.skin);
         hud.create();
 
         sb = new SpriteBatch();

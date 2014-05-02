@@ -3,7 +3,9 @@ package com.closedorbit.freelander.factories;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
+import com.closedorbit.freelander.Freelander;
 import com.closedorbit.freelander.entities.PlayerEntity;
 import com.closedorbit.freelander.levelPackLoader.Level;
 
@@ -11,16 +13,22 @@ import static com.closedorbit.freelander.utilities.Vars.PPM;
 
 public class ShipFactory {
 
+    Freelander game;
     World world;
 
-    public ShipFactory(World world) {
+    public ShipFactory(Freelander game, World world) {
+        this.game = game;
         this.world = world;
     }
 
-    public PlayerEntity createPlayer(Level levelData, float x, float y, String imageUrl) {
+    public PlayerEntity createPlayer(Level levelData, float x, float y) {
 
-        Texture texture = new Texture(Gdx.files.internal("images/dropship.png"));
-        Sprite sprite = new Sprite(texture, 0, 0, texture.getWidth(), texture.getHeight());
+        TextureRegion texture = game.imageCache.getTexture(levelData.ship.image);
+        Sprite shipNormal = new Sprite(texture, 0, 0, texture.getRegionWidth(), texture.getRegionHeight());
+        texture = game.imageCache.getTexture(levelData.ship.image + "-damage-light");
+        Sprite shipDamagedLight = new Sprite(texture, 0, 0, texture.getRegionWidth(), texture.getRegionHeight());
+        texture = game.imageCache.getTexture(levelData.ship.image + "-damage-heavy");
+        Sprite shipDamagedHeavy = new Sprite(texture, 0, 0, texture.getRegionWidth(), texture.getRegionHeight());
 
         // Create bodyDef.
         BodyDef bodyDef = new BodyDef();
@@ -34,7 +42,7 @@ public class ShipFactory {
 
         // Create body shape.
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(texture.getWidth() / 2 / PPM, texture.getHeight() / 2 / PPM);
+        shape.setAsBox(texture.getRegionWidth() / 2 / PPM, texture.getRegionHeight() / 2 / PPM);
 
         // Create fixture definition.
         FixtureDef fixtureDef = new FixtureDef();
@@ -48,7 +56,10 @@ public class ShipFactory {
 
         PlayerEntity ship = new PlayerEntity();
         body.setUserData(ship);
-        ship.sprite = sprite;
+        ship.sprite = shipNormal;
+        ship.spriteNormal = shipNormal;
+        ship.spriteDamageLight = shipDamagedLight;
+        ship.spriteDamageHeavy = shipDamagedHeavy;
         ship.body = body;
         ship.thrust = levelData.ship.thrust;
         ship.setHealth(levelData.ship.startingHealth);

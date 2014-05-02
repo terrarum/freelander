@@ -15,6 +15,8 @@ import com.closedorbit.freelander.utilities.Vars;
 
 public class GameHUD {
 
+    private Freelander game;
+
     private Stage stage;
     private Skin skin;
     private Table table;
@@ -25,8 +27,9 @@ public class GameHUD {
 
     PlayerEntity player;
 
-    public GameHUD(PlayerEntity player, Skin skin) {
-        stage = new Stage();
+    public GameHUD(Freelander game, PlayerEntity player, Skin skin) {
+        this.game = game;
+        this.stage = new Stage();
         this.player = player;
         this.skin = skin;
         table = new Table();
@@ -34,7 +37,7 @@ public class GameHUD {
 
     public void create() {
         System.out.println("HUD");
-        TextureRegionDrawable healthbarDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("images/slider.png"))));
+        TextureRegionDrawable healthbarDrawable = new TextureRegionDrawable(new TextureRegion(game.imageCache.getTexture("slider")));
         healthbar = new Image(healthbarDrawable);
 
         // Create labels.
