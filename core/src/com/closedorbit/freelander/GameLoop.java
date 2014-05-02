@@ -143,10 +143,10 @@ public class GameLoop {
 
                     float currentHealth = player.getHealth();
 
-                    if (currentHealth < 100 && currentHealth >= 60) {
+                    if (currentHealth < 100 && currentHealth >= 40) {
                         player.sprite = player.spriteDamageLight;
                     }
-                    else if (currentHealth < 60) {
+                    else if (currentHealth < 40) {
                         player.sprite = player.spriteDamageHeavy;
                     }
                 }
