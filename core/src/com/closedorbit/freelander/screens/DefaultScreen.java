@@ -8,7 +8,6 @@ public abstract class DefaultScreen implements Screen {
 
     public DefaultScreen(Freelander game) {
         this.game = game;
-
     }
 
     @Override

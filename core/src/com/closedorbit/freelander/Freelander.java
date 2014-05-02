@@ -21,27 +21,25 @@ import java.util.ArrayList;
 public class Freelander extends Game {
 
     private Stage stage;
-    private FontBuilder fontBuilder;
     public Skin skin;
     public ImageCache imageCache;
 
     @Override
 	public void create() {
-
         imageCache = new ImageCache();
         imageCache.load();
 
         skin = new Skin();
 
-        fontBuilder = new FontBuilder();
+        FontBuilder fontBuilder = new FontBuilder();
         fontBuilder.addFonts(skin);
         skin.load(Gdx.files.internal("skin.json"));
 
-        setScreen(new MainMenu(this));
+//        setScreen(new MainMenu(this));
 //            setScreen(new LevelPacksScreen(this));
 ////            Launch game straight to level 1 of levelpack 1.
-//            LevelPackLoader loader = new LevelPackLoader();
-//            ArrayList<LevelPack> levelPacks = loader.loadLevelPacks();
-//            setScreen(new GameScreen(this, levelPacks.get(0).levels.get(0)));
+            LevelPackLoader loader = new LevelPackLoader();
+            ArrayList<LevelPack> levelPacks = loader.loadLevelPacks();
+            setScreen(new GameScreen(this, levelPacks.get(0).levels.get(0)));
 	}
 }

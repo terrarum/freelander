@@ -68,7 +68,7 @@ public class LevelPacksScreen extends DefaultScreen {
                 @Override
                 public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                     game.setScreen(new LevelsScreen(game, pack));
-                };
+                }
             });
 
             table.add(packButton).width(300).padBottom(20);

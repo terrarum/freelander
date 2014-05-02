@@ -7,12 +7,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.closedorbit.freelander.entities.EntityManager;
-import com.closedorbit.freelander.entities.PlanetEntity;
-import com.closedorbit.freelander.entities.RectangleEntity;
-import com.closedorbit.freelander.entities.ShipEntity;
+import com.closedorbit.freelander.entities.*;
 import com.closedorbit.freelander.factories.EntityFactory;
 import com.closedorbit.freelander.levelPackLoader.Level;
+import com.closedorbit.freelander.screens.LevelCompleteScreen;
 import com.closedorbit.freelander.utilities.BoundedCamera;
 import com.closedorbit.freelander.utilities.Vars;
 
@@ -21,7 +19,7 @@ public class GameLoop {
     // BOx2d camera. Only used for debug.
     BoundedCamera b2dCam;
     Box2DDebugRenderer b2dr;
-    ShipEntity player;
+    PlayerEntity player;
 
     Level levelData;
     Freelander game;
@@ -46,7 +44,7 @@ public class GameLoop {
     ContactListener contactListener;
     Boolean canDamage = false;
 
-    public GameLoop(Freelander game, Level levelData, World world, final ShipEntity player, BoundedCamera cam) {
+    public GameLoop(Freelander game, Level levelData, World world, final PlayerEntity player, BoundedCamera cam) {
         this.levelData = levelData;
         this.game = game;
         this.world = world;
@@ -128,6 +126,7 @@ public class GameLoop {
                     float impact = impulse.getNormalImpulses()[0];
                     if (impact < 200) {
                         System.out.println("Safe");
+                        player.landed = true;
                     }
                     else if (impact < 1500) {
                         System.out.println("Damage");
@@ -135,9 +134,11 @@ public class GameLoop {
                         if (newHealth == 0) {
                             System.out.println("Destroyed!");
                         }
+                        else {
+                            player.landed = true;
+                        }
                     }
                     else {
-                        System.out.println("Destroyed");
                         player.setHealth(0);
                     }
                     canDamage = false;

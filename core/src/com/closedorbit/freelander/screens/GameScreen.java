@@ -74,6 +74,16 @@ public class GameScreen extends DefaultScreen {
 
     @Override
     public void render(float delta) {
+
+        if (player.getHealth() == 0) {
+            System.out.println("BOOM");
+            game.setScreen(new LevelCompleteScreen(game, "You crashed. Everybody is dead."));
+        } else {
+            if (player.landed == true) {
+                game.setScreen(new LevelCompleteScreen(game, "You did it!"));
+            }
+        }
+
         // Clear the screen.
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -101,8 +111,8 @@ public class GameScreen extends DefaultScreen {
 
     @Override
     public void hide() {
-        world.dispose();
-        gameLoop.dispose();
+//        world.dispose();
+//        gameLoop.dispose();
     }
 
 }
