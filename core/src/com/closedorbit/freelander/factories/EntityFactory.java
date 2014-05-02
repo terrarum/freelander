@@ -3,13 +3,16 @@ package com.closedorbit.freelander.factories;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.closedorbit.freelander.Freelander;
 import com.closedorbit.freelander.entities.RectangleEntity;
 import com.closedorbit.freelander.entities.SpriteEntity;
+import com.closedorbit.freelander.utilities.ImageCache;
 
 import java.util.HashMap;
 
@@ -17,27 +20,18 @@ import static com.closedorbit.freelander.utilities.Vars.PPM;
 
 public class EntityFactory {
 
+    Freelander game;
     private World world;
-    private HashMap<String, Texture> textureCache;
-    private Texture texture;
 
-    public EntityFactory(World world) {
-        this.textureCache = new HashMap<String, Texture>();
+    public EntityFactory(Freelander game, World world) {
+        this.game = game;
         this.world = world;
     }
 
     public SpriteEntity createSpriteEntity(float x, float y, String imageName) {
-
-        if (!textureCache.containsKey(imageName)) {
-            texture = new Texture(Gdx.files.internal("images/" + imageName + ".png"));
-            textureCache.put(imageName, texture);
-        }
-        else {
-            texture = textureCache.get(imageName);
-        }
-
+        TextureRegion texture = game.imageCache.getTexture(imageName);
         SpriteEntity entity = new SpriteEntity();
-        Sprite sprite = new Sprite(texture, 0, 0, texture.getWidth(), texture.getHeight());
+        Sprite sprite = new Sprite(texture, 0, 0, texture.getRegionWidth(), texture.getRegionHeight());
         sprite.setPosition(x, y);
         entity.sprite = sprite;
         return entity;
@@ -55,9 +49,9 @@ public class EntityFactory {
         boxShape.dispose();
 
         if (imageName != null) {
-            Texture texture = new Texture(Gdx.files.internal("images/" + imageName + ".png"));
-            int tWidth = texture.getWidth();
-            int tHeight = texture.getHeight();
+            TextureRegion texture = game.imageCache.getTexture(imageName);
+            int tWidth = texture.getRegionWidth();
+            int tHeight = texture.getRegionHeight();
             Sprite sprite = new Sprite(texture, 0, 0, tWidth, tHeight);
             sprite.setPosition(x, y);
 

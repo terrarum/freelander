@@ -15,9 +15,10 @@ import com.closedorbit.freelander.utilities.Vars;
 
 public class GameHUD {
 
+    private Freelander game;
+
     private Stage stage;
     private Skin skin;
-    private FontBuilder fontBuilder;
     private Table table;
 
     private Label altitude;
@@ -26,18 +27,17 @@ public class GameHUD {
 
     PlayerEntity player;
 
-    public GameHUD(PlayerEntity player) {
-        stage = new Stage();
-        skin = new Skin();
+    public GameHUD(Freelander game, PlayerEntity player, Skin skin) {
+        this.game = game;
+        this.stage = new Stage();
         this.player = player;
-        fontBuilder = new FontBuilder();
-        fontBuilder.addFonts(skin);
-        skin.load(Gdx.files.internal("skin.json"));
+        this.skin = skin;
         table = new Table();
     }
 
     public void create() {
-        TextureRegionDrawable healthbarDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("images/slider.png"))));
+        System.out.println("HUD");
+        TextureRegionDrawable healthbarDrawable = new TextureRegionDrawable(new TextureRegion(game.imageCache.getTexture("slider")));
         healthbar = new Image(healthbarDrawable);
 
         // Create labels.
@@ -58,7 +58,6 @@ public class GameHUD {
     public void update() {
         altitude.setText((int) player.getAltitude() + "m");
         velocity.setText((int) Math.abs(player.getVelocity().y * Vars.PPM) + "m/s");
-//        healthbar.setHeight(player.getHealth());
         healthbar.setScaleY(player.getHealth());
     }
 

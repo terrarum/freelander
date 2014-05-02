@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.closedorbit.freelander.Freelander;
 import com.closedorbit.freelander.utilities.FontBuilder;
 import com.closedorbit.freelander.levelPackLoader.LevelPack;
 import com.closedorbit.freelander.levelPackLoader.LevelPackLoader;
@@ -22,13 +23,14 @@ import java.util.ArrayList;
 
 public class LevelPacksScreen extends DefaultScreen {
 
-    Skin skin;
+    Freelander game;
     Stage stage;
     SpriteBatch batch;
     FontBuilder fontBuilder;
 
-    public LevelPacksScreen(Game game) {
+    public LevelPacksScreen(Freelander game) {
         super(game);
+        this.game = game;
     }
 
     @Override
@@ -37,21 +39,12 @@ public class LevelPacksScreen extends DefaultScreen {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        skin = new Skin();
-
         batch.getProjectionMatrix().setToOrtho2D(0, 0, Vars.V_WIDTH, Vars.V_HEIGHT);
-
-        // Add fonts to skin.
-        fontBuilder = new FontBuilder();
-        fontBuilder.addFonts(skin);
-
-        // Load ui skin for use now that fonts have been added.
-        skin.load(Gdx.files.internal("skin.json"));
 
         // Makes the stage listen to input?
         Gdx.input.setInputProcessor(stage);
 
-        Label title = new Label("Freelander", skin, "title-font");
+        Label title = new Label("Freelander", game.skin, "title-font");
 
         // Create level pack loader.
         LevelPackLoader loader = new LevelPackLoader();
@@ -69,7 +62,7 @@ public class LevelPacksScreen extends DefaultScreen {
 
 //            final LevelPack levelPack = pack;
 
-            TextButton packButton = new TextButton(pack.name, skin);
+            TextButton packButton = new TextButton(pack.name, game.skin);
 
             packButton.addListener(new ChangeListener() {
                 @Override
@@ -98,7 +91,6 @@ public class LevelPacksScreen extends DefaultScreen {
 
     @Override
     public void hide() {
-        fontBuilder.dispose();
         batch.dispose();
         stage.dispose();
     }

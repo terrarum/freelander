@@ -16,6 +16,7 @@ public class ShipEntity extends Entity {
     private float altitude;
     private Vector2 velocity;
     private float health;
+    public String image;
 
     public float getHealth() {
         return health;

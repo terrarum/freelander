@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.closedorbit.freelander.Freelander;
 import com.closedorbit.freelander.utilities.FontBuilder;
 import com.closedorbit.freelander.levelPackLoader.Level;
 import com.closedorbit.freelander.levelPackLoader.LevelPack;
@@ -18,14 +19,14 @@ import com.closedorbit.freelander.utilities.Vars;
 
 public class LevelsScreen extends DefaultScreen {
 
+    Freelander game;
     LevelPack levelPack;
-    Skin skin;
     Stage stage;
     SpriteBatch batch;
-    FontBuilder fontBuilder;
 
-    public LevelsScreen(Game game, LevelPack levelPack) {
+    public LevelsScreen(Freelander game, LevelPack levelPack) {
         super(game);
+        this.game = game;
         this.levelPack = levelPack;
     }
 
@@ -37,21 +38,11 @@ public class LevelsScreen extends DefaultScreen {
 
         batch.getProjectionMatrix().setToOrtho2D(0, 0, Vars.V_WIDTH, Vars.V_HEIGHT);
 
-        // Create UI.
-        skin = new Skin();
-
-        // Add fonts to skin.
-        fontBuilder = new FontBuilder();
-        fontBuilder.addFonts(skin);
-
-        // Load ui skin for use now that fonts have been added.
-        skin.load(Gdx.files.internal("skin.json"));
-
         // Makes the stage listen to input?
         Gdx.input.setInputProcessor(stage);
 
-        Label title = new Label("Freelander", skin, "title-font");
-        Label packTitle = new Label(levelPack.name, skin, "normal-font");
+        Label title = new Label("Freelander", game.skin, "title-font");
+        Label packTitle = new Label(levelPack.name, game.skin, "normal-font");
 
         // Create layout table.
         Table table = new Table();
@@ -61,7 +52,7 @@ public class LevelsScreen extends DefaultScreen {
         for (final Level level : levelPack.levels) {
             table.row();
 
-            TextButton levelButton = new TextButton(level.name, skin);
+            TextButton levelButton = new TextButton(level.name, game.skin);
 
             levelButton.addListener(new ChangeListener() {
                 @Override
@@ -93,7 +84,6 @@ public class LevelsScreen extends DefaultScreen {
 
     @Override
     public void hide() {
-        fontBuilder.dispose();
         batch.dispose();
         stage.dispose();
     }

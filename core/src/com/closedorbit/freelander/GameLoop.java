@@ -23,6 +23,7 @@ public class GameLoop {
     ShipEntity player;
 
     Level levelData;
+    Freelander game;
     World world;
     BoundedCamera cam;
     OrthographicCamera parCam;
@@ -44,15 +45,16 @@ public class GameLoop {
     ContactListener contactListener;
     Boolean canDamage = false;
 
-    public GameLoop(Level levelData, World world, final ShipEntity player, BoundedCamera cam) {
+    public GameLoop(Freelander game, Level levelData, World world, final ShipEntity player, BoundedCamera cam) {
         this.levelData = levelData;
+        this.game = game;
         this.world = world;
         this.player = player;
         this.cam = cam;
 
         entityManager = new EntityManager();
 
-        EntityFactory entFact = new EntityFactory(world);
+        EntityFactory entFact = new EntityFactory(game, world);
 
         final RectangleEntity ground = entFact.createRectangleEntity(1, 0 - Vars.V_HEIGHT / 4, Vars.V_WIDTH * 4, Vars.V_HEIGHT / 2, levelData.planet.groundImage);
 
@@ -104,9 +106,6 @@ public class GameLoop {
                     if ((c1.getBody() == player.body || c2.getBody() == player.body) &&
                             (c1.getBody() == ground.body || c2.getBody() == ground.body)) {
                         canDamage = true;
-                        System.out.println("");
-                        System.out.println("CONTACT");
-                        System.out.println("");
                     }
                 }
             }
@@ -123,7 +122,6 @@ public class GameLoop {
 
             @Override
             public void postSolve(Contact contact, ContactImpulse impulse) {
-
                 if (canDamage) {
                     System.out.println(impulse.getNormalImpulses()[0]);
                     float impact = impulse.getNormalImpulses()[0];
@@ -142,6 +140,15 @@ public class GameLoop {
                         player.setHealth(0);
                     }
                     canDamage = false;
+
+                    float currentHealth = player.getHealth();
+
+                    if (currentHealth < 100 && currentHealth >= 40) {
+                        player.sprite = player.spriteDamageLight;
+                    }
+                    else if (currentHealth < 40) {
+                        player.sprite = player.spriteDamageHeavy;
+                    }
                 }
             }
         };

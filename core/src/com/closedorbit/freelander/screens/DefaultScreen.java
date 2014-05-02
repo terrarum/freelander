@@ -1,12 +1,12 @@
 package com.closedorbit.freelander.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import com.closedorbit.freelander.Freelander;
 
 public abstract class DefaultScreen implements Screen {
-    final Game game;
+    final Freelander game;
 
-    public DefaultScreen(Game game) {
+    public DefaultScreen(Freelander game) {
         this.game = game;
 
     }
