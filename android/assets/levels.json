@@ -15,7 +15,7 @@
                             y: 2000
                         },
                         thrust: {
-                            x: 0,
+                            x: 400,
                             y: 800
                         },
                         startingVelocity: {
