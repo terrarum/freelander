@@ -10,19 +10,21 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.closedorbit.freelander.Freelander;
 import com.closedorbit.freelander.utilities.FontBuilder;
 import com.closedorbit.freelander.utilities.Vars;
 
 public class MainMenu extends DefaultScreen {
 
-    Skin skin;
+    Freelander game;
     Stage stage;
     SpriteBatch batch;
 
     FontBuilder fontBuilder;
 
-    public MainMenu(Game game) {
+    public MainMenu(Freelander game) {
         super(game);
+        this.game = game;
     }
 
     @Override
@@ -33,23 +35,13 @@ public class MainMenu extends DefaultScreen {
 
         batch.getProjectionMatrix().setToOrtho2D(0, 0, Vars.V_WIDTH, Vars.V_HEIGHT);
 
-        // Create UI.
-        skin = new Skin();
-
-        // Add fonts to skin.
-        fontBuilder = new FontBuilder();
-        fontBuilder.addFonts(skin);
-
-        // Load ui skin for use now that fonts have been added.
-        skin.load(Gdx.files.internal("skin.json"));
-
         // Makes the stage listen to input?
         Gdx.input.setInputProcessor(stage);
 
         // Create UI pieces.
-        Label title = new Label("Freelander", skin, "title-font");
-        TextButton playButton = new TextButton("Play", skin);
-        TextButton optionsButton = new TextButton("Options", skin);
+        Label title = new Label("Freelander", game.skin, "title-font");
+        TextButton playButton = new TextButton("Play", game.skin);
+        TextButton optionsButton = new TextButton("Options", game.skin);
 
         // Create a layout table.
         Table table = new Table();
@@ -84,7 +76,6 @@ public class MainMenu extends DefaultScreen {
 
     @Override
     public void hide() {
-        fontBuilder.dispose();
         // Screen stuff.
         batch.dispose();
         stage.dispose();

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
+import com.closedorbit.freelander.Freelander;
 import com.closedorbit.freelander.GameHUD;
 import com.closedorbit.freelander.GameLoop;
 import com.closedorbit.freelander.entities.PlanetEntity;
@@ -17,6 +18,7 @@ import com.closedorbit.freelander.utilities.Vars;
 
 public class GameScreen extends DefaultScreen {
 
+    Freelander game;
     GameLoop gameLoop;
 
     // Sprite renderer.
@@ -40,8 +42,9 @@ public class GameScreen extends DefaultScreen {
     private double currentTime;
     private float step = 1f / 60.0f;
 
-    public GameScreen(Game game, Level levelData) {
+    public GameScreen(Freelander game, Level levelData) {
         super(game);
+        this.game = game;
 
         this.levelData = levelData;
         this.planet = levelData.planet;
@@ -62,7 +65,7 @@ public class GameScreen extends DefaultScreen {
         player = shipFact.createPlayer(levelData, 0, 0, "images/dropship.png");
         gameLoop = new GameLoop(levelData, world, player, cam);
 
-        hud = new GameHUD(player);
+        hud = new GameHUD(player, game.skin);
         hud.create();
 
         sb = new SpriteBatch();
