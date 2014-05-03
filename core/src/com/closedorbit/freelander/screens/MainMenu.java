@@ -59,7 +59,7 @@ public class MainMenu extends DefaultScreen {
         table.add(playButton).padBottom(100);
         table.row();
         table.add(optionsButton).padBottom(200);
-        table.debug();
+//        table.debug();
         stage.addActor(table);
 
         playButton.addListener(new ChangeListener() {
@@ -75,7 +75,7 @@ public class MainMenu extends DefaultScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-        Table.drawDebug(stage);
+//        Table.drawDebug(stage);
 
         batch.begin();
 

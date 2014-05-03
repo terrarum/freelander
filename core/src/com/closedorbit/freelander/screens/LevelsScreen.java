@@ -42,15 +42,21 @@ public class LevelsScreen extends DefaultScreen {
         Gdx.input.setInputProcessor(stage);
 
         Label title = new Label("Freelander", game.skin, "title-font");
-        Label packTitle = new Label(levelPack.name, game.skin, "normal-font");
+        Label packTitle = new Label(levelPack.name, game.skin, "sub-title-font");
+        Table levelTable = new Table();
 
         // Create layout table.
         Table table = new Table();
         table.setFillParent(true);
-        table.add(title).expand().top().padTop(100);
+        table.add(title).top().padTop(100);
+        table.row();
+        table.add(packTitle).top().padTop(20);
+
+        table.row();
+        table.add(levelTable).fill().expand();
 
         for (final Level level : levelPack.levels) {
-            table.row();
+            levelTable.row();
 
             TextButton levelButton = new TextButton(level.name, game.skin);
 
@@ -61,11 +67,8 @@ public class LevelsScreen extends DefaultScreen {
                 }
             });
 
-            table.add(levelButton).width(300).padBottom(20);
+            levelTable.add(levelButton).width(300).padBottom(20);
         }
-
-        table.row();
-        table.add(packTitle).padTop(50);
 
         stage.addActor(table);
     }
