@@ -8,11 +8,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.closedorbit.freelander.Freelander;
 import com.closedorbit.freelander.utilities.FontBuilder;
 import com.closedorbit.freelander.levelPackLoader.LevelPack;
@@ -36,7 +34,7 @@ public class LevelPacksScreen extends DefaultScreen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        stage = new Stage();
+        stage = new Stage(new ExtendViewport(Vars.V_WIDTH, Vars.V_HEIGHT));
         Gdx.input.setInputProcessor(stage);
 
         batch.getProjectionMatrix().setToOrtho2D(0, 0, Vars.V_WIDTH, Vars.V_HEIGHT);
@@ -53,16 +51,27 @@ public class LevelPacksScreen extends DefaultScreen {
 
         // Create layout table.
         Table table = new Table();
+        table.debug();
         table.setFillParent(true);
         table.add(title).expand().top().padTop(100);
 
-        // Loop through level packs.
-        for (final LevelPack pack : levelPacks) {
-            table.row();
+        // Create scrollPane and table to go inside it.
+        Table scrollTable = new Table();
+        scrollTable.debug();
+        ScrollPane pane = new ScrollPane(scrollTable, game.skin);
 
-//            final LevelPack levelPack = pack;
+        // Only scroll horizontally.
+        pane.setScrollingDisabled(false, true);
+
+        // Add scrollpane to main table.
+        table.row();
+        table.add(pane).fill().expand();
+
+        // Loop through level packs, add each pack button to the scrollPane table.
+        for (final LevelPack pack : levelPacks) {
 
             TextButton packButton = new TextButton(pack.name, game.skin);
+            Container buttonWrapper = new Container(packButton);
 
             packButton.addListener(new ChangeListener() {
                 @Override
@@ -71,9 +80,10 @@ public class LevelPacksScreen extends DefaultScreen {
                 };
             });
 
-            table.add(packButton).width(300).padBottom(20);
+            scrollTable.add(buttonWrapper).width(Vars.V_WIDTH);
         }
 
+        // Add the table to the stage.
         stage.addActor(table);
     }
 
@@ -83,6 +93,7 @@ public class LevelPacksScreen extends DefaultScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
+        Table.drawDebug(stage);
 
         batch.begin();
 

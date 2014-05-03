@@ -10,6 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.closedorbit.freelander.Freelander;
 import com.closedorbit.freelander.utilities.FontBuilder;
 import com.closedorbit.freelander.utilities.Vars;
@@ -20,8 +23,6 @@ public class MainMenu extends DefaultScreen {
     Stage stage;
     SpriteBatch batch;
 
-    FontBuilder fontBuilder;
-
     public MainMenu(Freelander game) {
         super(game);
         this.game = game;
@@ -30,7 +31,14 @@ public class MainMenu extends DefaultScreen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        stage = new Stage();
+        // No scaling
+//        stage = new Stage();
+        // Stretches stage to fix the screen. Will change aspect ratio.
+//        stage = new Stage(new StretchViewport(Vars.V_WIDTH, Vars.V_HEIGHT));
+        // Scales while maintaining aspect ratio. Will show black bars if required.
+//        stage = new Stage(new FitViewport(Vars.V_WIDTH, Vars.V_HEIGHT));
+        // Scales until width or height hits the screen size, expands view for the shorter dimension. Maintains aspect ratio.
+        stage = new Stage(new ExtendViewport(Vars.V_WIDTH, Vars.V_HEIGHT));
         Gdx.input.setInputProcessor(stage);
 
         batch.getProjectionMatrix().setToOrtho2D(0, 0, Vars.V_WIDTH, Vars.V_HEIGHT);
@@ -51,7 +59,7 @@ public class MainMenu extends DefaultScreen {
         table.add(playButton).padBottom(100);
         table.row();
         table.add(optionsButton).padBottom(200);
-//        table.debug();
+        table.debug();
         stage.addActor(table);
 
         playButton.addListener(new ChangeListener() {

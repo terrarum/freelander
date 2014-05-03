@@ -33,12 +33,11 @@ public class Freelander extends Game {
 
         skin = new Skin();
 
-        fontBuilder = new FontBuilder();
+        fontBuilder = new FontBuilder(this);
         fontBuilder.addFonts(skin);
         skin.load(Gdx.files.internal("skin.json"));
 
         setScreen(new MainMenu(this));
-//            setScreen(new LevelPacksScreen(this));
 ////            Launch game straight to level 1 of levelpack 1.
 //            LevelPackLoader loader = new LevelPackLoader();
 //            ArrayList<LevelPack> levelPacks = loader.loadLevelPacks();

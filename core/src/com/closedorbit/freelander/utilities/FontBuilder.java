@@ -5,16 +5,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.closedorbit.freelander.Freelander;
 
 public class FontBuilder {
 
     BitmapFont titleFont;
     BitmapFont normalFont;
+    Freelander game;
 
-    public FontBuilder() {
-
+    public FontBuilder(Freelander game) {
+        this.game = game;
     }
 
     // Adds
