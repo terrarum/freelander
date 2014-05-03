@@ -53,7 +53,7 @@ public class LevelPacksScreen extends DefaultScreen {
 
         // Create layout table.
         Table table = new Table();
-//        table.debug();
+        table.debug();
         table.setFillParent(true);
         table.add(title).top().padTop(100);
         table.row();
@@ -61,7 +61,8 @@ public class LevelPacksScreen extends DefaultScreen {
 
         // Create scrollPane and table to go inside it.
         final Table scrollTable = new Table();
-//        scrollTable.debug();
+        scrollTable.debug();
+        scrollTable.padLeft(75).padRight(75);
         final ScrollPane pane = new ScrollPane(scrollTable, game.skin);
 
         // Only scroll horizontally.
@@ -73,18 +74,33 @@ public class LevelPacksScreen extends DefaultScreen {
         table.add(pane).fill().expand();
 
         // Loop through level packs, add each pack button to the scrollPane table.
+        int i = 0;
         for (final LevelPack pack : levelPacks) {
 
             TextButton packButton = new TextButton(pack.name, game.skin);
-            Container buttonWrapper = new Container(packButton);
-
             packButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                     game.setScreen(new LevelsScreen(game, pack));
                 };
             });
-            scrollTable.add(buttonWrapper).width(Vars.V_WIDTH);
+
+            Container buttonWrapper;
+
+            if (i == 0) {
+                buttonWrapper = new Container(packButton).width(300);//.padLeft(150);
+//                buttonWrapper.padLeft(150);
+            }
+            else if (i == levelPacks.size() - 1) {
+                buttonWrapper = new Container(packButton).width(300);//.padRight(150);
+//                buttonWrapper.padRight(150);
+            }
+            else {
+                buttonWrapper = new Container(packButton).width(300);
+            }
+            scrollTable.add(buttonWrapper).width(Vars.V_WIDTH - 150);
+
+            i++;
         }
 
         // Add the table to the stage.
@@ -97,7 +113,7 @@ public class LevelPacksScreen extends DefaultScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-//        Table.drawDebug(stage);
+        Table.drawDebug(stage);
 
         batch.begin();
 
