@@ -86,7 +86,7 @@ public class GameLoop {
         rocketLight.attachToBody(player.body, 0, -6);
 
                                                             // distance, x, y, dir, cone
-        spotLight = new ConeLight(rayHandler, 64, Color.BLUE, 500 / Vars.PPM, 80 / Vars.PPM, 100 / Vars.PPM, -140, 35);
+        spotLight = new ConeLight(rayHandler, 64, Color.BLUE, 500 / Vars.PPM, 110 / Vars.PPM, 100 / Vars.PPM, -130, 30);
 
         // Created bounded Box2d camera.
         parCam = new OrthographicCamera();
@@ -175,15 +175,15 @@ public class GameLoop {
 
         // Input.
         if (Gdx.input.isTouched()) {
-            int touchX = Gdx.input.getX();
-            int touchY = Gdx.input.getY();
+            float touchX = Gdx.input.getX();
+            float touchY = Gdx.input.getY();
 
             float screenH = Gdx.graphics.getHeight();
             float screenW = Gdx.graphics.getWidth();
 
             // 0/0 is the top left, so flip the Y axis.
-            float touchW = touchX / screenW * 100;
-            float touchH = (screenH - touchY) / screenH * 100;
+            float touchW = touchX / screenW;
+            float touchH = (screenH - touchY) / screenH;
 
 //            System.out.println(touchH + "/" + touchY);
 
@@ -191,16 +191,16 @@ public class GameLoop {
             float thrustY; // heehee, thrusty
 
             // Percentage of the screen from the bottom that should allow fine control of thrust.
-            int touchBoxTop = 33;
+            float touchBoxTop = 0.33f;
 
             // Calculate horizontal thrust force.
-            int deadGap = 10; // Middle percentage that gives no horizontal thrust. @TODO might need some friction to reduce horizontal motion.
+            float deadGap = 0.1f; // Middle percentage that gives no horizontal thrust.
             // If between 0% and (50% - half of the deadgap), go left;
-            if (touchW < (50 - deadGap / 2)) {
+            if (touchW < (0.5f - deadGap / 2)) {
                 thrustX = -player.thrust.x;
             }
             // If between (50% + half of the deadgap) and 100%, go right:
-            else if (touchW > (50 + deadGap / 2)) {
+            else if (touchW > (0.5 + deadGap / 2)) {
                 thrustX = player.thrust.x;
             }
             // Otherwise, no horizontal motion.
@@ -216,9 +216,9 @@ public class GameLoop {
             // If they are within the control area
             else {
                 // Get percentage of touch in bottom third area.
-                float subH = touchH / touchBoxTop * 100;
+                float subH = touchH / touchBoxTop;
                 // Apply that percentage to the ship's max thrust.
-                thrustY = player.thrust.y * (subH / 100);
+                thrustY = player.thrust.y * subH;
             }
 
             player.body.applyForce(new Vector2(thrustX, thrustY), player.body.getWorldCenter(), true);

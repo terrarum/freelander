@@ -83,7 +83,7 @@ public class GameScreen extends DefaultScreen {
 
         // If the player is no longer moving.
         if (player.body.getLinearVelocity().y == 0 && player.body.getLinearVelocity().x == 0) {
-            if (player.body.getPosition().y < 6 && player.body.getPosition().x * Vars.PPM > -15 && player.body.getPosition().x * Vars.PPM < 25) {
+            if (player.body.getPosition().y < 10 && player.body.getPosition().x * Vars.PPM > -15 && player.body.getPosition().x * Vars.PPM < 25) {
                 game.setScreen(new LevelCompleteScreen(game, "You did it!"));
             }
         }
