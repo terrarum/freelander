@@ -27,6 +27,7 @@ public class Freelander extends Game {
 
     @Override
 	public void create() {
+        Gdx.input.setCatchBackKey(true);
 
         imageCache = new ImageCache();
         imageCache.load();

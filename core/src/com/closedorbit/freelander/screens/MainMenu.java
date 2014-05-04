@@ -54,7 +54,7 @@ public class MainMenu extends DefaultScreen {
         // Create a layout table.
         Table table = new Table();
         table.setFillParent(true);
-        table.add(title).expand().top().padTop(100);
+        table.add(title).expand().top().padTop(60);
         table.row();
         table.add(playButton).padBottom(100);
         table.row();

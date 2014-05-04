@@ -55,7 +55,7 @@ public class LevelPacksScreen extends DefaultScreen {
         Table table = new Table();
         table.debug();
         table.setFillParent(true);
-        table.add(title).top().padTop(100);
+        table.add(title).top().padTop(60);
         table.row();
         table.add(subTitle).top().padTop(20);
 
