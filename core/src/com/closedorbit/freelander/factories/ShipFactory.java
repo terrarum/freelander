@@ -63,6 +63,7 @@ public class ShipFactory {
         ship.body = body;
         ship.thrust = levelData.ship.thrust;
         ship.setHealth(levelData.ship.startingHealth);
+        ship.setFuel(levelData.ship.startingFuel);
 
         return ship;
     }

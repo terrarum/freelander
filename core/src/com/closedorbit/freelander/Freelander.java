@@ -5,9 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.closedorbit.freelander.entities.SpriteEntity;
 import com.closedorbit.freelander.levelPackLoader.LevelPack;
 import com.closedorbit.freelander.levelPackLoader.LevelPackLoader;
 import com.closedorbit.freelander.screens.GameScreen;
@@ -36,6 +40,10 @@ public class Freelander extends Game {
 
         fontBuilder = new FontBuilder(this);
         fontBuilder.addFonts(skin);
+
+        TextureRegionDrawable hudBackground = new TextureRegionDrawable(new TextureRegion(imageCache.getTexture("hud-background")));
+        skin.add("hud-background", hudBackground);
+
         skin.load(Gdx.files.internal("skin.json"));
 
 //        setScreen(new MainMenu(this));

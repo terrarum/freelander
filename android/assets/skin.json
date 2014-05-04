@@ -12,7 +12,7 @@
         normal-font: { font: normal-font, fontColor: white },
         title-font: { font: title-font, fontColor: white },
         sub-title-font: { font: sub-title-font, fontColor: white },
-        hud-font: { font: hud-font, fontColor: white }
+        hud-font: { font: hud-font, fontColor: black, background: hud-background }
     },
 
     com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {

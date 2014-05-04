@@ -12,11 +12,15 @@ public class ShipEntity extends Entity {
     public Vector2 startingVelocity;
     public Vector2 startingPosition;
     public float startingHealth;
+    public float startingFuel;
 
     private float altitude;
     private Vector2 velocity;
     private float health;
+    private float fuel;
     public String image;
+
+    public float maxFuelConsumptionRate = 0.1f;
 
     public float getHealth() {
         return health;
@@ -31,6 +35,21 @@ public class ShipEntity extends Entity {
 
     public void setHealth(float health) {
         this.health = health;
+    }
+
+    public float getFuel() {
+        return fuel;
+    }
+
+    public void consumeFuel(float rate) {
+        if (rate > maxFuelConsumptionRate) {
+            rate = maxFuelConsumptionRate;
+        }
+        setFuel(getFuel() - rate);
+    }
+
+    public void setFuel(float fuel) {
+        this.fuel = fuel;
     }
 
     public Vector2 getPosition() {

@@ -28,6 +28,7 @@ public class GameHUD {
     private Label thrustX;
     private Label thrustY;
     private Image healthbar;
+    private Image fuelbar;
 
     PlayerEntity player;
 
@@ -46,56 +47,61 @@ public class GameHUD {
         // Create labels.
         altitude = new Label("Freelander", skin, "hud-font");
         velocity = new Label("Freelander", skin, "hud-font");
-        thrustX = new Label("10%", skin, "hud-font");
-        thrustY = new Label("10%", skin, "hud-font");
+        thrustX = new Label(" 10%", skin, "hud-font");
+        thrustY = new Label(" 10%", skin, "hud-font");
 
+        // Aligns the label text to the right.
         altitude.setAlignment(Align.right);
         velocity.setAlignment(Align.right);
 
+        int labelPad = 17;
+
+        // Create the left HUD elements.
         Table leftTable = new Table();
         leftTable.debug();
-        leftTable.add(thrustY).fillX().expandX().padBottom(20);
+        // The padding here is to make the top and bottom of the text align with
+        // the top and bottom of the table.
+        leftTable.add(thrustY).fillX().expandX().padBottom(labelPad);
         leftTable.row();
-        leftTable.add(thrustX).fillX().expandX().padTop(20);
+        leftTable.add(thrustX).fillX().expandX().padTop(labelPad);
 
+        // Create the right HUD elements.
         Table rightTable = new Table();
         rightTable.debug();
-        rightTable.add(altitude).fillX().expandX().padBottom(20);
+        rightTable.add(altitude).fillX().expandX().padBottom(labelPad);
         rightTable.row();
-        rightTable.add(velocity).fillX().expandX().padTop(20);
+        rightTable.add(velocity).fillX().expandX().padTop(labelPad);
 
-        Container fuelBarContainer = new Container();
+        // Create the health and fuel bars. These are single pixel high bars that are scaled up.
+        TextureRegionDrawable healthbarDrawable = new TextureRegionDrawable(new TextureRegion(game.imageCache.getTexture("slider-health")));
+        TextureRegionDrawable fuelbarDrawable = new TextureRegionDrawable(new TextureRegion(game.imageCache.getTexture("slider-fuel")));
+        healthbar = new Image(healthbarDrawable);
+        fuelbar = new Image(fuelbarDrawable);
+
+        // Containers for the bars.
+        Container fuelBarContainer = new Container(fuelbar).align(Align.bottom);
         Container shipSpace = new Container();
-        Container healthBarContainer = new Container();
+        Container healthBarContainer = new Container(healthbar).align(Align.bottom);
 
-        table.add(leftTable).left().width(170).padLeft(10).height(100).fillX().expandX();
+        table.add(leftTable).left().width(100).padLeft(10).height(100).fillX().expandX();
 
         table.add(fuelBarContainer).width(10).height(100);
 
-        table.add(shipSpace).width(100).height(100);
+        table.add(shipSpace).width(180).height(100);
 
         table.add(healthBarContainer).width(10).height(100);
 
-        table.add(rightTable).right().width(170).padRight(10).height(100).fillX().expandX();
-
-        TextureRegionDrawable healthbarDrawable = new TextureRegionDrawable(new TextureRegion(game.imageCache.getTexture("slider")));
-        healthbar = new Image(healthbarDrawable);
-
-//        // Create layout.
-//        table.setFillParent(true);
-//        table.add(altitude).padBottom(30);
-//        table.row();
-//        table.add(velocity).padTop(30);
-//        table.add(healthbar);
+        table.add(rightTable).right().width(100).padRight(10).height(100).fillX().expandX();
 
         // Add HUD to stage.
         stage.addActor(table);
     }
 
     public void update() {
-        altitude.setText((int) player.getAltitude() + "m");
-        velocity.setText((int) Math.abs(player.getVelocity().y * Vars.PPM) + "m/s");
+        altitude.setText((int) player.getAltitude() + "m ");
+        velocity.setText((int) Math.abs(player.getVelocity().y * Vars.PPM) + "m/s ");
         healthbar.setScaleY(player.getHealth());
+        fuelbar.setScaleY(player.getFuel());
     }
 
     public void render(SpriteBatch sb) {

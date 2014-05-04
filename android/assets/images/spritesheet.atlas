@@ -33,21 +33,21 @@ dome1
   index: -1
 dropship
   rotate: false
-  xy: 2118, 306
+  xy: 2320, 383
   size: 37, 45
   orig: 37, 45
   offset: 0, 0
   index: -1
 dropship-damage-heavy
   rotate: false
-  xy: 2320, 383
+  xy: 2522, 460
   size: 37, 45
   orig: 37, 45
   offset: 0, 0
   index: -1
 dropship-damage-light
   rotate: false
-  xy: 2522, 460
+  xy: 1924, 136
   size: 37, 45
   orig: 37, 45
   offset: 0, 0
@@ -66,6 +66,13 @@ groundTile
   orig: 100, 100
   offset: 0, 0
   index: -1
+hud-background
+  rotate: false
+  xy: 2118, 324
+  size: 120, 27
+  orig: 120, 27
+  offset: 0, 0
+  index: -1
 landingpad
   rotate: false
   xy: 1924, 390
@@ -75,21 +82,28 @@ landingpad
   index: -1
 marker
   rotate: false
-  xy: 1924, 171
+  xy: 2026, 273
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
-slider
+slider-fuel
   rotate: false
   xy: 2, 2
   size: 10, 1
   orig: 10, 1
   offset: 0, 0
   index: -1
+slider-health
+  rotate: false
+  xy: 2240, 350
+  size: 10, 1
+  orig: 10, 1
+  offset: 0, 0
+  index: -1
 star
   rotate: false
-  xy: 2026, 273
+  xy: 2118, 312
   size: 10, 10
   orig: 10, 10
   offset: 0, 0

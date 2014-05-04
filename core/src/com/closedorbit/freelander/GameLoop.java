@@ -43,6 +43,9 @@ public class GameLoop {
     float shakeX;
     float shakeY;
 
+    public int heavyDamageThreshold = 40;
+    public float subH; // Percentage of position between 0% and 33% of the screen.
+
     ContactListener contactListener;
     Boolean canDamage = false;
 
@@ -144,10 +147,10 @@ public class GameLoop {
 
                     float currentHealth = player.getHealth();
 
-                    if (currentHealth < 100 && currentHealth >= 40) {
+                    if (currentHealth < 100 && currentHealth >= heavyDamageThreshold) {
                         player.sprite = player.spriteDamageLight;
                     }
-                    else if (currentHealth < 40) {
+                    else if (currentHealth < heavyDamageThreshold) {
                         player.sprite = player.spriteDamageHeavy;
                     }
                 }
@@ -167,6 +170,11 @@ public class GameLoop {
 
         shipVelocity = Math.abs(player.getVelocity().y * Vars.PPM);
         shakeRate = shipVelocity / 100;
+
+        if (player.getHealth() < heavyDamageThreshold) {
+            float damageRate = 0.01f;
+            player.consumeFuel(damageRate);
+        }
 
         // Input.
         if (Gdx.input.isTouched()) {
@@ -207,17 +215,22 @@ public class GameLoop {
             // If the player touches above this point, use full thrust.
             if (touchH >= touchBoxTop) {
                 thrustY = player.thrust.y;
+                subH = 1;
             }
             // If they are within the control area
             else {
                 // Get percentage of touch in bottom third area.
-                float subH = touchH / touchBoxTop * 100;
+                subH = touchH / touchBoxTop;
+                if (subH < 0) {
+                    subH = 0;
+                }
                 // Apply that percentage to the ship's max thrust.
-                thrustY = player.thrust.y * (subH / 100);
+                thrustY = player.thrust.y * subH;
             }
 
             player.body.applyForce(new Vector2(thrustX, thrustY), player.body.getWorldCenter(), true);
             rocketLight.setActive(true);
+            player.consumeFuel(player.maxFuelConsumptionRate * subH);
             shakeRate *= 1.5;
             shakeX = Vars.getRandom(-shakeRate, shakeRate);
             shakeY = Vars.getRandom(-shakeRate, shakeRate);

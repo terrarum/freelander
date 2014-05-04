@@ -22,7 +22,8 @@
                             x: 0,
                             y: -200
                         },
-                        startingHealth: 100
+                        startingHealth: 100,
+                        startingFuel: 100
                     },
                     planet: {
                         groundImage: "ground",
