@@ -9,6 +9,8 @@ import static com.closedorbit.freelander.utilities.Vars.PPM;
 
 public class ShipEntity extends Entity {
 
+    Float delta;
+
     public Vector2 thrust;
     public Vector2 startingVelocity;
     public Vector2 startingPosition;
@@ -90,7 +92,8 @@ public class ShipEntity extends Entity {
         return velocity;
     }
 
-    public void update() {
+    public void update(float delta) {
+        this.delta = delta;
         altitude = getPosition().y * Vars.PPM - sprite.getHeight() / 2;
         velocity = body.getLinearVelocityFromWorldPoint(new Vector2(0f, 0f));
     }

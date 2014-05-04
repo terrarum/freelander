@@ -117,6 +117,9 @@ public class GameHUD {
         healthbar.setScaleY(currentHealth);
         fuelbar.setScaleY(currentFuel);
 
+        unknown.setText(" " + Gdx.graphics.getFramesPerSecond() + "fps");
+//        unknown.setText(" " + Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+
     }
 
     public void render(SpriteBatch sb) {

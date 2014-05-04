@@ -164,7 +164,7 @@ public class GameLoop {
         }
     }
 
-    public void update() {
+    public void update(float delta) {
         rayHandler.setCombinedMatrix(b2dCam.combined);
 
         shipVelocity = Math.abs(player.getVelocity().y * Vars.PPM);

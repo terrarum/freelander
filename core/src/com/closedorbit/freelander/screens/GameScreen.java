@@ -1,6 +1,5 @@
 package com.closedorbit.freelander.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -37,11 +36,6 @@ public class GameScreen extends DefaultScreen {
     PlanetEntity planet;
     PlayerEntity player;
 
-    // Time Control.
-    private double accumulator;
-    private double currentTime;
-    private float step = 1f / 60.0f;
-
     public GameScreen(Freelander game, Level levelData) {
         super(game);
         this.game = game;
@@ -72,16 +66,29 @@ public class GameScreen extends DefaultScreen {
         sb.getProjectionMatrix().setToOrtho2D(0, 0, Vars.V_WIDTH, Vars.V_HEIGHT);
     }
 
+    // Time Control.
+    private float accumulator = 0;
+    private float step = 1f / 60.0f;
+
     @Override
     public void render(float delta) {
+
         // Clear the screen.
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Update player stats.
-        player.update();
-        // Update game.
-        gameLoop.update();
+        accumulator += delta;
+
+        while (accumulator >= delta) {
+            delta = Math.min(delta, 1 / 30f);
+            world.step(step, 6, 2);
+            accumulator -= step;
+
+            // Update player stats.
+            player.update(delta);
+            // Update game.
+            gameLoop.update(delta);
+        }
         // Update HUD.
         hud.update();
 
@@ -95,8 +102,6 @@ public class GameScreen extends DefaultScreen {
         // Render the HUD.
         sb.setProjectionMatrix(hudCam.combined);
         hud.render(sb);
-
-        world.step(step, 6, 2);
     }
 
     @Override
