@@ -11,11 +11,16 @@
         default: { font: normal-font, fontColor: white },
         normal-font: { font: normal-font, fontColor: white },
         title-font: { font: title-font, fontColor: white },
+        sub-title-font: { font: sub-title-font, fontColor: white }
     },
 
     com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
         default: { up: button, down: button-down, checked: button-down, disabled: button-disabled },
         transparent: { },
+    },
+
+    com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+        default: {}
     },
 
     com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {

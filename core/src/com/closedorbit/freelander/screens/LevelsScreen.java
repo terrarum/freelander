@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.closedorbit.freelander.Freelander;
 import com.closedorbit.freelander.utilities.FontBuilder;
 import com.closedorbit.freelander.levelPackLoader.Level;
@@ -33,7 +34,7 @@ public class LevelsScreen extends DefaultScreen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        stage = new Stage();
+        stage = new Stage(new ExtendViewport(Vars.V_WIDTH, Vars.V_HEIGHT));
         Gdx.input.setInputProcessor(stage);
 
         batch.getProjectionMatrix().setToOrtho2D(0, 0, Vars.V_WIDTH, Vars.V_HEIGHT);
@@ -42,18 +43,25 @@ public class LevelsScreen extends DefaultScreen {
         Gdx.input.setInputProcessor(stage);
 
         Label title = new Label("Freelander", game.skin, "title-font");
-        Label packTitle = new Label(levelPack.name, game.skin, "normal-font");
+        Label packTitle = new Label(levelPack.name, game.skin, "sub-title-font");
+        Table levelTable = new Table();
 
         // Create layout table.
         Table table = new Table();
+        table.debug();
         table.setFillParent(true);
-        table.add(title).expand().top().padTop(100);
+        table.add(title).top().padTop(60);
+        table.row();
+        table.add(packTitle).top().padTop(20);
 
+        table.row();
+        table.add(levelTable).fill().expand();
+
+        int i = 0;
+        int rowCount = 3;
         for (final Level level : levelPack.levels) {
-            table.row();
 
-            TextButton levelButton = new TextButton(level.name, game.skin);
-
+            TextButton levelButton = new TextButton(Integer.toString(level.id), game.skin);
             levelButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
@@ -61,11 +69,13 @@ public class LevelsScreen extends DefaultScreen {
                 }
             });
 
-            table.add(levelButton).width(300).padBottom(20);
-        }
+            if (i % rowCount == 0) {
+                levelTable.row();
+            }
+            levelTable.add(levelButton).width(70).height(70).padRight(20).padBottom(20);
 
-        table.row();
-        table.add(packTitle).padTop(50);
+            i++;
+        }
 
         stage.addActor(table);
     }
@@ -76,6 +86,7 @@ public class LevelsScreen extends DefaultScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
+        Table.drawDebug(stage);
 
         batch.begin();
 

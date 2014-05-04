@@ -56,45 +56,39 @@
                         ]
                     }
                 },
-//                {
-//                    id: 2,
-//                    name: "Reconnaissance",
-//                    gravity: 1.622
-//                },
-//                {
-//                    id: 3,
-//                    name: "Water",
-//                    gravity: 1.622
-//                },
-//                {
-//                    id: 4,
-//                    name: "Return to Base",
-//                    gravity: 1.622
-//                }
+                {
+                    id: 2,
+                    name: "Reconnaissance"
+                },
+                {
+                    id: 3,
+                    name: "Water"
+                },
+                {
+                    id: 4,
+                    name: "Return to Base"
+                },
+                {
+                    id: 5,
+                    name: "Reconnaissance"
+                },
+                {
+                    id: 6,
+                    name: "Water"
+                },
+                {
+                    id: 7,
+                    name: "Return to Base"
+                },
+                 {
+                     id: 8,
+                     name: "Reconnaissance"
+                 },
+                 {
+                     id: 9,
+                     name: "Water"
+                 }
             ]
-        },
-//        {
-//            id: 2,
-//            name: "Mission to Mars",
-//            image: "missiontomars",
-//            levels: [
-//                {
-//                    id: 1,
-//                    name: "Red Planet"
-//                },
-//                {
-//                    id: 2,
-//                    name: "Signs of Life"
-//                },
-//                {
-//                    id: 3,
-//                    name: "Delivery"
-//                },
-//                {
-//                    id: 4,
-//                    name: "Fresh Tracks"
-//                }
-//            ]
-//        }
+        }
     ]
 }
