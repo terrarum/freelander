@@ -33,7 +33,6 @@ public class GameLoop {
 
     EntityManager entityManager;
     RayHandler rayHandler;
-    Light rocketLight;
     Light padLightLeft;
     Light padLightRight;
     Light spotLight;
@@ -85,11 +84,11 @@ public class GameLoop {
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(0.1f, 0.1f, 0.1f, 0.5f);
 
-        rocketLight = new PointLight(rayHandler, 64);
-        rocketLight.setDistance(50);
-        rocketLight.setColor(Color.ORANGE);
-        rocketLight.attachToBody(player.body, 0, -6);
-
+        // Create player's engine light.
+        player.rocketLight = new PointLight(rayHandler, 64);
+        player.rocketLight.setDistance(50);
+        player.rocketLight.setColor(Color.ORANGE);
+        player.rocketLight.attachToBody(player.body, 0, -6);
                                                             // distance, x, y, dir, cone
         spotLight = new ConeLight(rayHandler, 64, Color.BLUE, 500 / Vars.PPM, 80 / Vars.PPM, 100 / Vars.PPM, -140, 35);
 
@@ -191,7 +190,7 @@ public class GameLoop {
 //            System.out.println(touchH + "/" + touchY);
 
             float thrustX;
-            float thrustY; // heehee, thrusty
+            float thrustY;
 
             // Percentage of the screen from the bottom that should allow fine control of thrust.
             int touchBoxTop = 33;
@@ -228,20 +227,25 @@ public class GameLoop {
                 thrustY = player.thrust.y * subH;
             }
 
-            player.body.applyForce(new Vector2(thrustX, thrustY), player.body.getWorldCenter(), true);
-            rocketLight.setActive(true);
+
+            player.thrust(new Vector2(thrustX, thrustY));
+
             player.consumeFuel(player.maxFuelConsumptionRate * subH);
             shakeRate *= 1.5;
             shakeX = Vars.getRandom(-shakeRate, shakeRate);
             shakeY = Vars.getRandom(-shakeRate, shakeRate);
         }
         else {
-            rocketLight.setActive(false);
+            player.rocketLight.setActive(false);
             if (shipVelocity < 20) {
                 shakeRate = 0;
             }
         }
 
+        if (player.getFuel() == 0) {
+            shakeX = 0;
+            shakeY = 0;
+        }
         cam.setPosition(player.getPosition().x * Vars.PPM + shakeX, player.getPosition().y * Vars.PPM + shakeY);
         cam.update();
 

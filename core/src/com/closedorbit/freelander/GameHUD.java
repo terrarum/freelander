@@ -30,6 +30,9 @@ public class GameHUD {
     private Image healthbar;
     private Image fuelbar;
 
+    private float currentHealth;
+    private float currentFuel;
+
     PlayerEntity player;
 
     public GameHUD(Freelander game, PlayerEntity player, Skin skin) {
@@ -100,8 +103,12 @@ public class GameHUD {
     public void update() {
         altitude.setText((int) player.getAltitude() + "m ");
         velocity.setText((int) Math.abs(player.getVelocity().y * Vars.PPM) + "m/s ");
-        healthbar.setScaleY(player.getHealth());
-        fuelbar.setScaleY(player.getFuel());
+
+        currentHealth = player.getHealth() / player.maxHealth * 100;
+        currentFuel = player.getFuel() / player.maxFuel * 100;
+
+        healthbar.setScaleY(currentHealth);
+        fuelbar.setScaleY(currentFuel);
     }
 
     public void render(SpriteBatch sb) {

@@ -1,6 +1,8 @@
 package com.closedorbit.freelander.factories;
 
+import box2dLight.PointLight;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -61,9 +63,14 @@ public class ShipFactory {
         ship.spriteDamageLight = shipDamagedLight;
         ship.spriteDamageHeavy = shipDamagedHeavy;
         ship.body = body;
+
+        // This should be using the same ship entity that's being mapped to from the json reader but I did it wrong.
         ship.thrust = levelData.ship.thrust;
         ship.setHealth(levelData.ship.startingHealth);
+        ship.maxHealth = levelData.ship.maxHealth;
         ship.setFuel(levelData.ship.startingFuel);
+        ship.maxFuel = levelData.ship.maxFuel;
+        ship.maxFuelConsumptionRate = levelData.ship.maxFuelConsumptionRate;
 
         return ship;
     }

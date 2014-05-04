@@ -1,5 +1,6 @@
 package com.closedorbit.freelander.entities;
 
+import box2dLight.Light;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.closedorbit.freelander.utilities.Vars;
@@ -11,7 +12,9 @@ public class ShipEntity extends Entity {
     public Vector2 thrust;
     public Vector2 startingVelocity;
     public Vector2 startingPosition;
+    public float maxHealth;
     public float startingHealth;
+    public float maxFuel;
     public float startingFuel;
 
     private float altitude;
@@ -20,7 +23,9 @@ public class ShipEntity extends Entity {
     private float fuel;
     public String image;
 
-    public float maxFuelConsumptionRate = 0.1f;
+    public Light rocketLight;
+
+    public float maxFuelConsumptionRate;
 
     public float getHealth() {
         return health;
@@ -45,11 +50,24 @@ public class ShipEntity extends Entity {
         if (rate > maxFuelConsumptionRate) {
             rate = maxFuelConsumptionRate;
         }
-        setFuel(getFuel() - rate);
+        float newFuelCapacity = getFuel() - rate;
+        newFuelCapacity = newFuelCapacity < 0 ? 0 : newFuelCapacity;
+        setFuel(newFuelCapacity);
     }
 
     public void setFuel(float fuel) {
         this.fuel = fuel;
+    }
+
+    public void thrust(Vector2 vector) {
+        if (getFuel() > 0) {
+            body.applyForce(vector, body.getWorldCenter(), true);
+
+            rocketLight.setActive(true);
+        }
+        else {
+            rocketLight.setActive(false);
+        }
     }
 
     public Vector2 getPosition() {
