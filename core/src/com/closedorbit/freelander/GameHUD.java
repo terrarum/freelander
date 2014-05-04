@@ -25,6 +25,7 @@ public class GameHUD {
     private Label unknown;
     private Image healthbar;
     private Image fuelbar;
+    private Image targetPointer;
 
     private float currentHealth;
     private float currentFuel;
@@ -74,12 +75,16 @@ public class GameHUD {
         // Create the health and fuel bars. These are single pixel high bars that are scaled up.
         TextureRegionDrawable healthbarDrawable = new TextureRegionDrawable(new TextureRegion(game.imageCache.getTexture("slider-health")));
         TextureRegionDrawable fuelbarDrawable = new TextureRegionDrawable(new TextureRegion(game.imageCache.getTexture("slider-fuel")));
+        TextureRegionDrawable targetPointerDrawable = new TextureRegionDrawable(new TextureRegion(game.imageCache.getTexture("pointer1")));
+
         healthbar = new Image(healthbarDrawable);
         fuelbar = new Image(fuelbarDrawable);
+        targetPointer = new Image(targetPointerDrawable);
+        targetPointer.setOrigin(targetPointer.getWidth() / 2, targetPointer.getHeight() / 2);
 
         // Containers for the bars.
         Container fuelBarContainer = new Container(fuelbar).align(Align.bottom);
-        Container shipSpace = new Container();
+        Container shipSpace = new Container(targetPointer);
         Container healthBarContainer = new Container(healthbar).align(Align.bottom);
 
         table.add(leftTable).left().width(100).padLeft(10).height(100).fillX().expandX();
@@ -97,8 +102,9 @@ public class GameHUD {
     }
 
     public void update() {
-        // Create direction indicators.
-
+        // Calculate angle from ship to target (0, 0).
+        float degrees = (float) ((Math.atan2 (0 - player.getPosition().x, -(0 - player.getPosition().y)) * 180.0d / Math.PI) + 180.0f);
+        targetPointer.setRotation(degrees);
         // Set
         thrustY.setText(" " + (int) Math.abs(player.getVelocity().y * Vars.PPM) + "m/s ");
         thrustX.setText(" " + (int) Math.abs(player.getVelocity().x * Vars.PPM) + "m/s ");

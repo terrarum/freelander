@@ -47,7 +47,7 @@ dropship-damage-heavy
   index: -1
 dropship-damage-light
   rotate: false
-  xy: 1924, 136
+  xy: 2026, 238
   size: 37, 45
   orig: 37, 45
   offset: 0, 0
@@ -82,9 +82,16 @@ landingpad
   index: -1
 marker
   rotate: false
-  xy: 2026, 273
+  xy: 1924, 89
   size: 10, 10
   orig: 10, 10
+  offset: 0, 0
+  index: -1
+pointer1
+  rotate: false
+  xy: 1924, 101
+  size: 80, 80
+  orig: 80, 80
   offset: 0, 0
   index: -1
 slider-fuel
@@ -96,14 +103,14 @@ slider-fuel
   index: -1
 slider-health
   rotate: false
-  xy: 2240, 350
+  xy: 2118, 321
   size: 10, 1
   orig: 10, 1
   offset: 0, 0
   index: -1
 star
   rotate: false
-  xy: 2118, 312
+  xy: 2006, 171
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
