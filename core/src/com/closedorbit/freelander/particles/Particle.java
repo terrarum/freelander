@@ -18,14 +18,14 @@ public class Particle {
         this.sprite = sprite;
     }
 
-    public void update() {
+    public boolean update() {
         this.x += dx;
         this.y += dy;
         life--;
 
-        if(life <= 0) {
-            this.x = 0;
-            this.y = 0;
+        if (life <= 0) {
+            return false;
         }
+        return true;
     }
 }

@@ -52,8 +52,11 @@ public class Emitter {
             this.y = (parentBody.getPosition().y + offsetY) * Vars.PPM;
         }
 
-        for (Particle particle : particles) {
-            particle.update();
+        // Loops backwards through particle array, removes dead particles. Should probably dispose of sprites too or something.
+        for (int i = particles.size() - 1; i >= 0; i-- ) {
+            if (!particles.get(i).update()) {
+                particles.remove(i);
+            }
         }
     }
 
