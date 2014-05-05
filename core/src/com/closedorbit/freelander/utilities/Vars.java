@@ -14,4 +14,8 @@ public class Vars {
     public static float getRandom(float min, float max) {
         return min + (int)(Math.random() * ((max - min) + 1));
     }
+
+    public static float getRandomFloat(float min, float max) {
+        return min + (float)Math.random() * ((max - min) + 1);
+    }
 }

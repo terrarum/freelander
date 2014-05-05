@@ -9,13 +9,11 @@ public class EmitterManager {
     private ArrayList<Emitter> emitters;
 
     public EmitterManager() {
-        System.out.println("New EmitterManager");
         emitters = new ArrayList<Emitter>();
     }
 
     // Returns an emitter and adds it to the emitter list.
     public Emitter createEmitter() {
-        System.out.println("Create Emitter");
         Emitter emitter = new Emitter();
         emitters.add(emitter);
         return emitter;
@@ -24,7 +22,7 @@ public class EmitterManager {
     // Updates each emitter.
     public void update(float delta) {
         for (Emitter emitter : emitters) {
-            emitter.update(delta);
+            emitter.update();
         }
     }
 

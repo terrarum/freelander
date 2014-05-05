@@ -50,6 +50,7 @@ public class EntityManager {
     public void renderPar(SpriteBatch sb) {
         sb.begin();
         for (Entity entity : parEntities) {
+            sb.setColor(1.0f, 1.0f, 1.0f, 1.0f);
             sb.draw(entity.sprite, entity.sprite.getX(), entity.sprite.getY());
         }
         sb.end();

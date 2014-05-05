@@ -40,6 +40,7 @@ public class GameScreen extends DefaultScreen {
     PlanetEntity planet;
     PlayerEntity player;
     EmitterManager emitterManager;
+    Emitter rocketEmitter;
 
     public GameScreen(Freelander game, Level levelData) {
         super(game);
@@ -70,13 +71,9 @@ public class GameScreen extends DefaultScreen {
         emitterManager = new EmitterManager();
 
         // Create an emitter for the ship's rocket.
-        Emitter rocketEmitter = emitterManager.createEmitter();
-        // Creates a smoke sprite and sets it as the particle to be used.
-        Sprite smoke = game.imageCache.getSprite("smoke");
-        rocketEmitter.setParticleSprite(smoke);
+        rocketEmitter = emitterManager.createEmitter();
         // Attach the emitter to the player's box2d body.
-        rocketEmitter.attachToBody(player.body);
-        rocketEmitter.createParticles(20);
+        rocketEmitter.attachToBody(player.body, -2.6f, -8.8f);
 
         sb = new SpriteBatch();
         sb.getProjectionMatrix().setToOrtho2D(0, 0, Vars.V_WIDTH, Vars.V_HEIGHT);
@@ -88,6 +85,10 @@ public class GameScreen extends DefaultScreen {
 
     @Override
     public void render(float delta) {
+
+        // Creates a smoke sprite and sets it as the particle to be used.
+        Sprite smoke = game.imageCache.getSprite("smoke");
+        rocketEmitter.createParticles(1, smoke);
 
         // Clear the screen.
         Gdx.gl.glClearColor(0, 0, 0, 1);
