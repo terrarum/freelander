@@ -33,7 +33,6 @@ public class GameLoop {
 
     EntityManager entityManager;
     RayHandler rayHandler;
-    Light rocketLight;
     Light padLightLeft;
     Light padLightRight;
     Light spotLight;
@@ -42,6 +41,9 @@ public class GameLoop {
     float shakeRate;
     float shakeX;
     float shakeY;
+
+    public int heavyDamageThreshold = 40;
+    public float subH; // Percentage of position between 0% and 33% of the screen.
 
     ContactListener contactListener;
     Boolean canDamage = false;
@@ -82,11 +84,11 @@ public class GameLoop {
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(0.1f, 0.1f, 0.1f, 0.5f);
 
-        rocketLight = new PointLight(rayHandler, 64);
-        rocketLight.setDistance(50);
-        rocketLight.setColor(Color.ORANGE);
-        rocketLight.attachToBody(player.body, 0, -6);
-
+        // Create player's engine light.
+        player.rocketLight = new PointLight(rayHandler, 64);
+        player.rocketLight.setDistance(50);
+        player.rocketLight.setColor(Color.ORANGE);
+        player.rocketLight.attachToBody(player.body, 0, -6);
                                                             // distance, x, y, dir, cone
         spotLight = new ConeLight(rayHandler, 64, Color.BLUE, 500 / Vars.PPM, 80 / Vars.PPM, 100 / Vars.PPM, -140, 35);
 
@@ -144,10 +146,10 @@ public class GameLoop {
 
                     float currentHealth = player.getHealth();
 
-                    if (currentHealth < 100 && currentHealth >= 40) {
+                    if (currentHealth < 100 && currentHealth >= heavyDamageThreshold) {
                         player.sprite = player.spriteDamageLight;
                     }
-                    else if (currentHealth < 40) {
+                    else if (currentHealth < heavyDamageThreshold) {
                         player.sprite = player.spriteDamageHeavy;
                     }
                 }
@@ -162,11 +164,16 @@ public class GameLoop {
         }
     }
 
-    public void update() {
+    public void update(float delta) {
         rayHandler.setCombinedMatrix(b2dCam.combined);
 
         shipVelocity = Math.abs(player.getVelocity().y * Vars.PPM);
         shakeRate = shipVelocity / 100;
+
+        if (player.getHealth() < heavyDamageThreshold) {
+            float damageRate = 0.01f;
+            player.consumeFuel(damageRate);
+        }
 
         // Input.
         if (Gdx.input.isTouched()) {
@@ -183,7 +190,7 @@ public class GameLoop {
 //            System.out.println(touchH + "/" + touchY);
 
             float thrustX;
-            float thrustY; // heehee, thrusty
+            float thrustY;
 
             // Percentage of the screen from the bottom that should allow fine control of thrust.
             int touchBoxTop = 33;
@@ -207,28 +214,38 @@ public class GameLoop {
             // If the player touches above this point, use full thrust.
             if (touchH >= touchBoxTop) {
                 thrustY = player.thrust.y;
+                subH = 1;
             }
             // If they are within the control area
             else {
                 // Get percentage of touch in bottom third area.
-                float subH = touchH / touchBoxTop * 100;
+                subH = touchH / touchBoxTop;
+                if (subH < 0) {
+                    subH = 0;
+                }
                 // Apply that percentage to the ship's max thrust.
-                thrustY = player.thrust.y * (subH / 100);
+                thrustY = player.thrust.y * subH;
             }
 
-            player.body.applyForce(new Vector2(thrustX, thrustY), player.body.getWorldCenter(), true);
-            rocketLight.setActive(true);
+
+            player.thrust(new Vector2(thrustX, thrustY));
+
+            player.consumeFuel(player.maxFuelConsumptionRate * subH);
             shakeRate *= 1.5;
             shakeX = Vars.getRandom(-shakeRate, shakeRate);
             shakeY = Vars.getRandom(-shakeRate, shakeRate);
         }
         else {
-            rocketLight.setActive(false);
+            player.rocketLight.setActive(false);
             if (shipVelocity < 20) {
                 shakeRate = 0;
             }
         }
 
+        if (player.getFuel() == 0) {
+            shakeX = 0;
+            shakeY = 0;
+        }
         cam.setPosition(player.getPosition().x * Vars.PPM + shakeX, player.getPosition().y * Vars.PPM + shakeY);
         cam.update();
 

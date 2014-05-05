@@ -17,6 +17,7 @@ public class FontBuilder {
     BitmapFont titleFont;
     BitmapFont subtitleFont;
     BitmapFont normalFont;
+    BitmapFont hudFont;
     Freelander game;
 
     public FontBuilder(Freelander game) {
@@ -43,6 +44,11 @@ public class FontBuilder {
         labelParams.size = 40;
         normalFont = fontGenerator.generateFont(labelParams);
 
+        // Create button label font.
+        FreeTypeFontGenerator.FreeTypeFontParameter hudParams = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        hudParams.size = 25;
+        hudFont = fontGenerator.generateFont(hudParams);
+
         // Dispose of font generator.
         fontGenerator.dispose();
 
@@ -53,6 +59,7 @@ public class FontBuilder {
         skin.add("title-font", titleFont);
         skin.add("sub-title-font", subtitleFont);
         skin.add("normal-font", normalFont);
+        skin.add("hud-font", hudFont);
 
         return skin;
     }
@@ -62,5 +69,6 @@ public class FontBuilder {
         titleFont.dispose();
         subtitleFont.dispose();
         normalFont.dispose();
+        hudFont.dispose();
     }
 }
