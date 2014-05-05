@@ -1,8 +1,10 @@
 package com.closedorbit.freelander.entities;
 
 import box2dLight.Light;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.closedorbit.freelander.particles.Emitter;
 import com.closedorbit.freelander.utilities.Vars;
 
 import static com.closedorbit.freelander.utilities.Vars.PPM;
@@ -24,10 +26,17 @@ public class ShipEntity extends Entity {
     private float health;
     private float fuel;
     public String image;
+    public Emitter emitter;
+
+    public Sprite smoke;
 
     public Light rocketLight;
 
     public float maxFuelConsumptionRate;
+
+    public void setEmitter(Emitter emitter) {
+        this.emitter = emitter;
+    }
 
     public float getHealth() {
         return health;
@@ -63,6 +72,7 @@ public class ShipEntity extends Entity {
 
     public void thrust(Vector2 vector) {
         if (getFuel() > 0) {
+            emitter.createParticles(1, smoke);
             body.applyForce(vector, body.getWorldCenter(), true);
 
             rocketLight.setActive(true);
@@ -99,6 +109,7 @@ public class ShipEntity extends Entity {
     }
 
     public void render(SpriteBatch sb) {
+        sb.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         sb.begin();
         sb.draw(sprite, getPosition().x * PPM - getWidth() / 2, getPosition().y * PPM - getHeight() / 2);
         sb.end();
