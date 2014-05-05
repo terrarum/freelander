@@ -2,6 +2,8 @@ package com.closedorbit.freelander.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -35,12 +37,12 @@ public class LevelsScreen extends DefaultScreen {
     public void show() {
         batch = new SpriteBatch();
         stage = new Stage(new ExtendViewport(Vars.V_WIDTH, Vars.V_HEIGHT));
-        Gdx.input.setInputProcessor(stage);
 
         batch.getProjectionMatrix().setToOrtho2D(0, 0, Vars.V_WIDTH, Vars.V_HEIGHT);
 
-        // Makes the stage listen to input?
-        Gdx.input.setInputProcessor(stage);
+        inputMultiplexer.addProcessor(stage);
+        inputMultiplexer.addProcessor(this);
+        Gdx.input.setInputProcessor(inputMultiplexer);
 
         Label title = new Label("Freelander", game.skin, "title-font");
         Label packTitle = new Label(levelPack.name, game.skin, "sub-title-font");
@@ -80,13 +82,19 @@ public class LevelsScreen extends DefaultScreen {
         stage.addActor(table);
     }
 
+    public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.BACK) {
+            game.setScreen(new LevelPacksScreen(game));
+        }
+        return true;
+    }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-        Table.drawDebug(stage);
 
         batch.begin();
 

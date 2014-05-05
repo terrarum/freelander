@@ -118,7 +118,6 @@ public class GameHUD {
         fuelbar.setScaleY(currentFuel);
 
         unknown.setText(" " + Gdx.graphics.getFramesPerSecond() + "fps");
-//        unknown.setText(" " + Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 
     }
 

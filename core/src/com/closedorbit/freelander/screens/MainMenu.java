@@ -35,12 +35,12 @@ public class MainMenu extends DefaultScreen {
 //        stage = new Stage(new FitViewport(Vars.V_WIDTH, Vars.V_HEIGHT));
         // Scales until width or height hits the screen size, expands view for the shorter dimension. Maintains aspect ratio.
         stage = new Stage(new ExtendViewport(Vars.V_WIDTH, Vars.V_HEIGHT));
-        Gdx.input.setInputProcessor(stage);
 
         sb.getProjectionMatrix().setToOrtho2D(0, 0, Vars.V_WIDTH, Vars.V_HEIGHT);
 
-        // Makes the stage listen to input?
-        Gdx.input.setInputProcessor(stage);
+        inputMultiplexer.addProcessor(stage);
+        inputMultiplexer.addProcessor(this);
+        Gdx.input.setInputProcessor(inputMultiplexer);
 
         // Create UI pieces.
         Label title = new Label("Freelander", game.skin, "title-font");
@@ -60,9 +60,9 @@ public class MainMenu extends DefaultScreen {
 
         playButton.addListener(new ChangeListener() {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-            game.setScreen(new LevelPacksScreen(game));
-        };
-    });
+                game.setScreen(new LevelPacksScreen(game));
+            };
+        });
     }
 
     @Override

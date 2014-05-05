@@ -77,6 +77,7 @@ public class GameScreen extends DefaultScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // Variable timestep implementation: http://gafferongames.com/game-physics/fix-your-timestep/
         accumulator += delta;
 
         while (accumulator >= delta) {
