@@ -3,7 +3,9 @@ package com.closedorbit.freelander.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
 import com.closedorbit.freelander.Freelander;
 import com.closedorbit.freelander.GameHUD;
@@ -12,6 +14,8 @@ import com.closedorbit.freelander.entities.PlanetEntity;
 import com.closedorbit.freelander.entities.PlayerEntity;
 import com.closedorbit.freelander.factories.ShipFactory;
 import com.closedorbit.freelander.levelPackLoader.Level;
+import com.closedorbit.freelander.particles.Emitter;
+import com.closedorbit.freelander.particles.EmitterManager;
 import com.closedorbit.freelander.utilities.BoundedCamera;
 import com.closedorbit.freelander.utilities.Vars;
 
@@ -35,6 +39,7 @@ public class GameScreen extends DefaultScreen {
     GameHUD hud;
     PlanetEntity planet;
     PlayerEntity player;
+    EmitterManager emitterManager;
 
     public GameScreen(Freelander game, Level levelData) {
         super(game);
@@ -61,6 +66,17 @@ public class GameScreen extends DefaultScreen {
 
         hud = new GameHUD(game, player, game.skin);
         hud.create();
+
+        emitterManager = new EmitterManager();
+
+        // Create an emitter for the ship's rocket.
+        Emitter rocketEmitter = emitterManager.createEmitter();
+        // Creates a smoke sprite and sets it as the particle to be used.
+        Sprite smoke = game.imageCache.getSprite("smoke");
+        rocketEmitter.setParticleSprite(smoke);
+        // Attach the emitter to the player's box2d body.
+        rocketEmitter.attachToBody(player.body);
+        rocketEmitter.createParticles(20);
 
         sb = new SpriteBatch();
         sb.getProjectionMatrix().setToOrtho2D(0, 0, Vars.V_WIDTH, Vars.V_HEIGHT);
@@ -89,6 +105,7 @@ public class GameScreen extends DefaultScreen {
             player.update(delta);
             // Update game.
             gameLoop.update(delta);
+            emitterManager.update(delta);
         }
         // Update HUD.
         hud.update();
@@ -96,6 +113,7 @@ public class GameScreen extends DefaultScreen {
         // Render the game.
         sb.setProjectionMatrix(cam.combined);
         gameLoop.render(sb);
+        emitterManager.render(sb);
 
         // Should really be handled by the entity manager.
         player.render(sb);
